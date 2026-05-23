@@ -1,0 +1,527 @@
+Provinsi,Kode_Provinsi,Kabupaten_Kota,Kode_Kabupaten,Link
+Prov. Jawa Timur,50000,Kota Surabaya,56000,https://dapo.kemendikdasmen.go.id/sp/2/056000
+Prov. Jawa Timur,50000,Kab. Malang,51800,https://dapo.kemendikdasmen.go.id/sp/2/051800
+Prov. Jawa Timur,50000,Kab. Jember,52400,https://dapo.kemendikdasmen.go.id/sp/2/052400
+Prov. Jawa Timur,50000,Kab. Lamongan,50700,https://dapo.kemendikdasmen.go.id/sp/2/050700
+Prov. Jawa Timur,50000,Kab. Bojonegoro,50500,https://dapo.kemendikdasmen.go.id/sp/2/050500
+Prov. Jawa Timur,50000,Kab. Sidoarjo,50200,https://dapo.kemendikdasmen.go.id/sp/2/050200
+Prov. Jawa Timur,50000,Kab. Kediri,51300,https://dapo.kemendikdasmen.go.id/sp/2/051300
+Prov. Jawa Timur,50000,Kab. Pasuruan,51900,https://dapo.kemendikdasmen.go.id/sp/2/051900
+Prov. Jawa Timur,50000,Kab. Banyuwangi,52500,https://dapo.kemendikdasmen.go.id/sp/2/052500
+Prov. Jawa Timur,50000,Kab. Gresik,50100,https://dapo.kemendikdasmen.go.id/sp/2/050100
+Prov. Jawa Timur,50000,Kab. Sampang,52700,https://dapo.kemendikdasmen.go.id/sp/2/052700
+Prov. Jawa Timur,50000,Kab. Probolinggo,52000,https://dapo.kemendikdasmen.go.id/sp/2/052000
+Prov. Jawa Timur,50000,Kab. Sumenep,52800,https://dapo.kemendikdasmen.go.id/sp/2/052800
+Prov. Jawa Timur,50000,Kab. Bangkalan,52900,https://dapo.kemendikdasmen.go.id/sp/2/052900
+Prov. Jawa Timur,50000,Kab. Tuban,50600,https://dapo.kemendikdasmen.go.id/sp/2/050600
+Prov. Jawa Timur,50000,Kab. Blitar,51500,https://dapo.kemendikdasmen.go.id/sp/2/051500
+Prov. Jawa Timur,50000,Kab. Nganjuk,51400,https://dapo.kemendikdasmen.go.id/sp/2/051400
+Prov. Jawa Timur,50000,Kab. Jombang,50400,https://dapo.kemendikdasmen.go.id/sp/2/050400
+Prov. Jawa Timur,50000,Kab. Bondowoso,52200,https://dapo.kemendikdasmen.go.id/sp/2/052200
+Prov. Jawa Timur,50000,Kab. Mojokerto,50300,https://dapo.kemendikdasmen.go.id/sp/2/050300
+Prov. Jawa Timur,50000,Kab. Pamekasan,52600,https://dapo.kemendikdasmen.go.id/sp/2/052600
+Prov. Jawa Timur,50000,Kab. Tulungagung,51600,https://dapo.kemendikdasmen.go.id/sp/2/051600
+Prov. Jawa Timur,50000,Kab. Lumajang,52100,https://dapo.kemendikdasmen.go.id/sp/2/052100
+Prov. Jawa Timur,50000,Kab. Ngawi,50900,https://dapo.kemendikdasmen.go.id/sp/2/050900
+Prov. Jawa Timur,50000,Kab. Ponorogo,51100,https://dapo.kemendikdasmen.go.id/sp/2/051100
+Prov. Jawa Timur,50000,Kab. Situbondo,52300,https://dapo.kemendikdasmen.go.id/sp/2/052300
+Prov. Jawa Timur,50000,Kab. Pacitan,51200,https://dapo.kemendikdasmen.go.id/sp/2/051200
+Prov. Jawa Timur,50000,Kota Malang,56100,https://dapo.kemendikdasmen.go.id/sp/2/056100
+Prov. Jawa Timur,50000,Kab. Magetan,51000,https://dapo.kemendikdasmen.go.id/sp/2/051000
+Prov. Jawa Timur,50000,Kab. Trenggalek,51700,https://dapo.kemendikdasmen.go.id/sp/2/051700
+Prov. Jawa Timur,50000,Kab. Madiun,50800,https://dapo.kemendikdasmen.go.id/sp/2/050800
+Prov. Jawa Timur,50000,Kota Kediri,56300,https://dapo.kemendikdasmen.go.id/sp/2/056300
+Prov. Jawa Timur,50000,Kota Probolinggo,56700,https://dapo.kemendikdasmen.go.id/sp/2/056700
+Prov. Jawa Timur,50000,Kota Pasuruan,56600,https://dapo.kemendikdasmen.go.id/sp/2/056600
+Prov. Jawa Timur,50000,Kota Batu,56800,https://dapo.kemendikdasmen.go.id/sp/2/056800
+Prov. Jawa Timur,50000,Kota Madiun,56200,https://dapo.kemendikdasmen.go.id/sp/2/056200
+Prov. Jawa Timur,50000,Kota Blitar,56500,https://dapo.kemendikdasmen.go.id/sp/2/056500
+Prov. Jawa Timur,50000,Kota Mojokerto,56400,https://dapo.kemendikdasmen.go.id/sp/2/056400
+Prov. Jawa Barat,20000,Kab. Bogor,20500,https://dapo.kemendikdasmen.go.id/sp/2/020500
+Prov. Jawa Barat,20000,Kab. Garut,21100,https://dapo.kemendikdasmen.go.id/sp/2/021100
+Prov. Jawa Barat,20000,Kab. Sukabumi,20600,https://dapo.kemendikdasmen.go.id/sp/2/020600
+Prov. Jawa Barat,20000,Kab. Cianjur,20700,https://dapo.kemendikdasmen.go.id/sp/2/020700
+Prov. Jawa Barat,20000,Kab. Bandung,20800,https://dapo.kemendikdasmen.go.id/sp/2/020800
+Prov. Jawa Barat,20000,Kab. Bekasi,22200,https://dapo.kemendikdasmen.go.id/sp/2/022200
+Prov. Jawa Barat,20000,Kab. Tasikmalaya,21200,https://dapo.kemendikdasmen.go.id/sp/2/021200
+Prov. Jawa Barat,20000,Kab. Karawang,22100,https://dapo.kemendikdasmen.go.id/sp/2/022100
+Prov. Jawa Barat,20000,Kota Bekasi,26500,https://dapo.kemendikdasmen.go.id/sp/2/026500
+Prov. Jawa Barat,20000,Kota Bandung,26000,https://dapo.kemendikdasmen.go.id/sp/2/026000
+Prov. Jawa Barat,20000,Kab. Subang,21900,https://dapo.kemendikdasmen.go.id/sp/2/021900
+Prov. Jawa Barat,20000,Kab. Indramayu,21800,https://dapo.kemendikdasmen.go.id/sp/2/021800
+Prov. Jawa Barat,20000,Kab. Bandung Barat,22300,https://dapo.kemendikdasmen.go.id/sp/2/022300
+Prov. Jawa Barat,20000,Kab. Cirebon,21700,https://dapo.kemendikdasmen.go.id/sp/2/021700
+Prov. Jawa Barat,20000,Kota Depok,26600,https://dapo.kemendikdasmen.go.id/sp/2/026600
+Prov. Jawa Barat,20000,Kab. Sumedang,21000,https://dapo.kemendikdasmen.go.id/sp/2/021000
+Prov. Jawa Barat,20000,Kab. Ciamis,21400,https://dapo.kemendikdasmen.go.id/sp/2/021400
+Prov. Jawa Barat,20000,Kab. Kuningan,21500,https://dapo.kemendikdasmen.go.id/sp/2/021500
+Prov. Jawa Barat,20000,Kab. Majalengka,21600,https://dapo.kemendikdasmen.go.id/sp/2/021600
+Prov. Jawa Barat,20000,Kab. Purwakarta,22000,https://dapo.kemendikdasmen.go.id/sp/2/022000
+Prov. Jawa Barat,20000,Kota Bogor,26100,https://dapo.kemendikdasmen.go.id/sp/2/026100
+Prov. Jawa Barat,20000,Kota Tasikmalaya,26800,https://dapo.kemendikdasmen.go.id/sp/2/026800
+Prov. Jawa Barat,20000,Kab. Pangandaran,22500,https://dapo.kemendikdasmen.go.id/sp/2/022500
+Prov. Jawa Barat,20000,Kota Cimahi,26700,https://dapo.kemendikdasmen.go.id/sp/2/026700
+Prov. Jawa Barat,20000,Kota Cirebon,26300,https://dapo.kemendikdasmen.go.id/sp/2/026300
+Prov. Jawa Barat,20000,Kota Sukabumi,26200,https://dapo.kemendikdasmen.go.id/sp/2/026200
+Prov. Jawa Barat,20000,Kota Banjar,26900,https://dapo.kemendikdasmen.go.id/sp/2/026900
+Prov. Jawa Tengah,30000,Kab. Cilacap,30100,https://dapo.kemendikdasmen.go.id/sp/2/030100
+Prov. Jawa Tengah,30000,Kab. Banyumas,30200,https://dapo.kemendikdasmen.go.id/sp/2/030200
+Prov. Jawa Tengah,30000,Kab. Grobogan,31500,https://dapo.kemendikdasmen.go.id/sp/2/031500
+Prov. Jawa Tengah,30000,Kab. Brebes,32900,https://dapo.kemendikdasmen.go.id/sp/2/032900
+Prov. Jawa Tengah,30000,Kota Semarang,36300,https://dapo.kemendikdasmen.go.id/sp/2/036300
+Prov. Jawa Tengah,30000,Kab. Kebumen,30500,https://dapo.kemendikdasmen.go.id/sp/2/030500
+Prov. Jawa Tengah,30000,Kab. Klaten,31000,https://dapo.kemendikdasmen.go.id/sp/2/031000
+Prov. Jawa Tengah,30000,Kab. Pati,31800,https://dapo.kemendikdasmen.go.id/sp/2/031800
+Prov. Jawa Tengah,30000,Kab. Wonogiri,31200,https://dapo.kemendikdasmen.go.id/sp/2/031200
+Prov. Jawa Tengah,30000,Kab. Jepara,32000,https://dapo.kemendikdasmen.go.id/sp/2/032000
+Prov. Jawa Tengah,30000,Kab. Tegal,32800,https://dapo.kemendikdasmen.go.id/sp/2/032800
+Prov. Jawa Tengah,30000,Kab. Pemalang,32700,https://dapo.kemendikdasmen.go.id/sp/2/032700
+Prov. Jawa Tengah,30000,Kab. Blora,31600,https://dapo.kemendikdasmen.go.id/sp/2/031600
+Prov. Jawa Tengah,30000,Kab. Magelang,30800,https://dapo.kemendikdasmen.go.id/sp/2/030800
+Prov. Jawa Tengah,30000,Kab. Kendal,32400,https://dapo.kemendikdasmen.go.id/sp/2/032400
+Prov. Jawa Tengah,30000,Kab. Sragen,31400,https://dapo.kemendikdasmen.go.id/sp/2/031400
+Prov. Jawa Tengah,30000,Kab. Demak,32100,https://dapo.kemendikdasmen.go.id/sp/2/032100
+Prov. Jawa Tengah,30000,Kab. Boyolali,30900,https://dapo.kemendikdasmen.go.id/sp/2/030900
+Prov. Jawa Tengah,30000,Kab. Karanganyar,31300,https://dapo.kemendikdasmen.go.id/sp/2/031300
+Prov. Jawa Tengah,30000,Kab. Pekalongan,32600,https://dapo.kemendikdasmen.go.id/sp/2/032600
+Prov. Jawa Tengah,30000,Kab. Semarang,32200,https://dapo.kemendikdasmen.go.id/sp/2/032200
+Prov. Jawa Tengah,30000,Kab. Banjarnegara,30400,https://dapo.kemendikdasmen.go.id/sp/2/030400
+Prov. Jawa Tengah,30000,Kab. Purworejo,30600,https://dapo.kemendikdasmen.go.id/sp/2/030600
+Prov. Jawa Tengah,30000,Kab. Rembang,31700,https://dapo.kemendikdasmen.go.id/sp/2/031700
+Prov. Jawa Tengah,30000,Kab. Wonosobo,30700,https://dapo.kemendikdasmen.go.id/sp/2/030700
+Prov. Jawa Tengah,30000,Kab. Sukoharjo,31100,https://dapo.kemendikdasmen.go.id/sp/2/031100
+Prov. Jawa Tengah,30000,Kab. Purbalingga,30300,https://dapo.kemendikdasmen.go.id/sp/2/030300
+Prov. Jawa Tengah,30000,Kab. Temanggung,32300,https://dapo.kemendikdasmen.go.id/sp/2/032300
+Prov. Jawa Tengah,30000,Kab. Batang,32500,https://dapo.kemendikdasmen.go.id/sp/2/032500
+Prov. Jawa Tengah,30000,Kab. Kudus,31900,https://dapo.kemendikdasmen.go.id/sp/2/031900
+Prov. Jawa Tengah,30000,Kota Surakarta,36100,https://dapo.kemendikdasmen.go.id/sp/2/036100
+Prov. Jawa Tengah,30000,Kota Pekalongan,36400,https://dapo.kemendikdasmen.go.id/sp/2/036400
+Prov. Jawa Tengah,30000,Kota Tegal,36500,https://dapo.kemendikdasmen.go.id/sp/2/036500
+Prov. Jawa Tengah,30000,Kota Salatiga,36200,https://dapo.kemendikdasmen.go.id/sp/2/036200
+Prov. Jawa Tengah,30000,Kota Magelang,36000,https://dapo.kemendikdasmen.go.id/sp/2/036000
+Prov. Sumatera Utara,70000,Kab. Deli Serdang,70100,https://dapo.kemendikdasmen.go.id/sp/2/070100
+Prov. Sumatera Utara,70000,Kota Medan,76000,https://dapo.kemendikdasmen.go.id/sp/2/076000
+Prov. Sumatera Utara,70000,Kab. Langkat,70200,https://dapo.kemendikdasmen.go.id/sp/2/070200
+Prov. Sumatera Utara,70000,Kab. Simalungun,70400,https://dapo.kemendikdasmen.go.id/sp/2/070400
+Prov. Sumatera Utara,70000,Kab. Asahan,70600,https://dapo.kemendikdasmen.go.id/sp/2/070600
+Prov. Sumatera Utara,70000,Kab. Serdang Bedagai,72100,https://dapo.kemendikdasmen.go.id/sp/2/072100
+Prov. Sumatera Utara,70000,Kab. Nias Selatan,71700,https://dapo.kemendikdasmen.go.id/sp/2/071700
+Prov. Sumatera Utara,70000,Kab. Mandailing Natal,71500,https://dapo.kemendikdasmen.go.id/sp/2/071500
+Prov. Sumatera Utara,70000,Kab. Tapanuli Utara,70800,https://dapo.kemendikdasmen.go.id/sp/2/070800
+Prov. Sumatera Utara,70000,Kab. Batu Bara,72200,https://dapo.kemendikdasmen.go.id/sp/2/072200
+Prov. Sumatera Utara,70000,Kab. Labuhanbatu,70700,https://dapo.kemendikdasmen.go.id/sp/2/070700
+Prov. Sumatera Utara,70000,Kab. Tapanuli Tengah,70900,https://dapo.kemendikdasmen.go.id/sp/2/070900
+Prov. Sumatera Utara,70000,Kab. Labuhanbatu Utara,72500,https://dapo.kemendikdasmen.go.id/sp/2/072500
+Prov. Sumatera Utara,70000,Kab. Karo,70300,https://dapo.kemendikdasmen.go.id/sp/2/070300
+Prov. Sumatera Utara,70000,Kab. Tapanuli Selatan,71000,https://dapo.kemendikdasmen.go.id/sp/2/071000
+Prov. Sumatera Utara,70000,Kab. Dairi,70500,https://dapo.kemendikdasmen.go.id/sp/2/070500
+Prov. Sumatera Utara,70000,Kab. Toba,71600,https://dapo.kemendikdasmen.go.id/sp/2/071600
+Prov. Sumatera Utara,70000,Kab. Padang Lawas,72400,https://dapo.kemendikdasmen.go.id/sp/2/072400
+Prov. Sumatera Utara,70000,Kab. Humbang Hasundutan,71900,https://dapo.kemendikdasmen.go.id/sp/2/071900
+Prov. Sumatera Utara,70000,Kab. Labuhanbatu Selatan,72600,https://dapo.kemendikdasmen.go.id/sp/2/072600
+Prov. Sumatera Utara,70000,Kab. Nias Utara,72800,https://dapo.kemendikdasmen.go.id/sp/2/072800
+Prov. Sumatera Utara,70000,Kab. Padang Lawas utara,72300,https://dapo.kemendikdasmen.go.id/sp/2/072300
+Prov. Sumatera Utara,70000,Kota Binjai,76100,https://dapo.kemendikdasmen.go.id/sp/2/076100
+Prov. Sumatera Utara,70000,Kab. Nias,71100,https://dapo.kemendikdasmen.go.id/sp/2/071100
+Prov. Sumatera Utara,70000,Kab. Samosir,72000,https://dapo.kemendikdasmen.go.id/sp/2/072000
+Prov. Sumatera Utara,70000,Kota Pematangsiantar,76300,https://dapo.kemendikdasmen.go.id/sp/2/076300
+Prov. Sumatera Utara,70000,Kab. Nias Barat,72700,https://dapo.kemendikdasmen.go.id/sp/2/072700
+Prov. Sumatera Utara,70000,Kota Gunungsitoli,76700,https://dapo.kemendikdasmen.go.id/sp/2/076700
+Prov. Sumatera Utara,70000,Kota Padang Sidempuan,76600,https://dapo.kemendikdasmen.go.id/sp/2/076600
+Prov. Sumatera Utara,70000,Kota Tebing Tinggi,76200,https://dapo.kemendikdasmen.go.id/sp/2/076200
+Prov. Sumatera Utara,70000,Kota Tanjung Balai,76400,https://dapo.kemendikdasmen.go.id/sp/2/076400
+Prov. Sumatera Utara,70000,Kab. Pakpak Bharat,71800,https://dapo.kemendikdasmen.go.id/sp/2/071800
+Prov. Sumatera Utara,70000,Kota Sibolga,76500,https://dapo.kemendikdasmen.go.id/sp/2/076500
+Prov. Sulawesi Selatan,190000,Kota Makassar,196000,https://dapo.kemendikdasmen.go.id/sp/2/196000
+Prov. Sulawesi Selatan,190000,Kab. Bone,190700,https://dapo.kemendikdasmen.go.id/sp/2/190700
+Prov. Sulawesi Selatan,190000,Kab. Gowa,190300,https://dapo.kemendikdasmen.go.id/sp/2/190300
+Prov. Sulawesi Selatan,190000,Kab. Bulukumba,191100,https://dapo.kemendikdasmen.go.id/sp/2/191100
+Prov. Sulawesi Selatan,190000,Kab. Wajo,190800,https://dapo.kemendikdasmen.go.id/sp/2/190800
+Prov. Sulawesi Selatan,190000,Kab. Pangkajene Dan Kepulauan,190200,https://dapo.kemendikdasmen.go.id/sp/2/190200
+Prov. Sulawesi Selatan,190000,Kab. Jeneponto,190500,https://dapo.kemendikdasmen.go.id/sp/2/190500
+Prov. Sulawesi Selatan,190000,Kab. Maros,190100,https://dapo.kemendikdasmen.go.id/sp/2/190100
+Prov. Sulawesi Selatan,190000,Kab. Sinjai,191200,https://dapo.kemendikdasmen.go.id/sp/2/191200
+Prov. Sulawesi Selatan,190000,Kab. Luwu,191700,https://dapo.kemendikdasmen.go.id/sp/2/191700
+Prov. Sulawesi Selatan,190000,Kab. Pinrang,191400,https://dapo.kemendikdasmen.go.id/sp/2/191400
+Prov. Sulawesi Selatan,190000,Kab. Tana Toraja,191800,https://dapo.kemendikdasmen.go.id/sp/2/191800
+Prov. Sulawesi Selatan,190000,Kab. Takalar,190400,https://dapo.kemendikdasmen.go.id/sp/2/190400
+Prov. Sulawesi Selatan,190000,Kab. Luwu Utara,192400,https://dapo.kemendikdasmen.go.id/sp/2/192400
+Prov. Sulawesi Selatan,190000,Kab. Sidenreng Rappang,191500,https://dapo.kemendikdasmen.go.id/sp/2/191500
+Prov. Sulawesi Selatan,190000,Kab. Enrekang,191600,https://dapo.kemendikdasmen.go.id/sp/2/191600
+Prov. Sulawesi Selatan,190000,Kab. Barru,190600,https://dapo.kemendikdasmen.go.id/sp/2/190600
+Prov. Sulawesi Selatan,190000,Kab. Toraja Utara,192700,https://dapo.kemendikdasmen.go.id/sp/2/192700
+Prov. Sulawesi Selatan,190000,Kab. Soppeng,190900,https://dapo.kemendikdasmen.go.id/sp/2/190900
+Prov. Sulawesi Selatan,190000,Kab. Luwu Timur,192600,https://dapo.kemendikdasmen.go.id/sp/2/192600
+Prov. Sulawesi Selatan,190000,Kab. Bantaeng,191000,https://dapo.kemendikdasmen.go.id/sp/2/191000
+Prov. Sulawesi Selatan,190000,Kab. Kepulauan Selayar,191300,https://dapo.kemendikdasmen.go.id/sp/2/191300
+Prov. Sulawesi Selatan,190000,Kota Palopo,196200,https://dapo.kemendikdasmen.go.id/sp/2/196200
+Prov. Sulawesi Selatan,190000,Kota Parepare,196100,https://dapo.kemendikdasmen.go.id/sp/2/196100
+Prov. Banten,280000,Kab. Tangerang,280300,https://dapo.kemendikdasmen.go.id/sp/2/280300
+Prov. Banten,280000,Kab. Serang,280400,https://dapo.kemendikdasmen.go.id/sp/2/280400
+Prov. Banten,280000,Kab. Lebak,280200,https://dapo.kemendikdasmen.go.id/sp/2/280200
+Prov. Banten,280000,Kab. Pandeglang,280100,https://dapo.kemendikdasmen.go.id/sp/2/280100
+Prov. Banten,280000,Kota Tangerang Selatan,286300,https://dapo.kemendikdasmen.go.id/sp/2/286300
+Prov. Banten,280000,Kota Tangerang,286100,https://dapo.kemendikdasmen.go.id/sp/2/286100
+Prov. Banten,280000,Kota Serang,286200,https://dapo.kemendikdasmen.go.id/sp/2/286200
+Prov. Banten,280000,Kota Cilegon,286000,https://dapo.kemendikdasmen.go.id/sp/2/286000
+Prov. Nusa Tenggara Timur,240000,Kab. Timor Tengah Selatan,240300,https://dapo.kemendikdasmen.go.id/sp/2/240300
+Prov. Nusa Tenggara Timur,240000,Kab. Kupang,240100,https://dapo.kemendikdasmen.go.id/sp/2/240100
+Prov. Nusa Tenggara Timur,240000,Kab. Sumba Barat Daya,241900,https://dapo.kemendikdasmen.go.id/sp/2/241900
+Prov. Nusa Tenggara Timur,240000,Kab. Sikka,240800,https://dapo.kemendikdasmen.go.id/sp/2/240800
+Prov. Nusa Tenggara Timur,240000,Kab. Alor,240600,https://dapo.kemendikdasmen.go.id/sp/2/240600
+Prov. Nusa Tenggara Timur,240000,Kab. Manggarai Timur,242000,https://dapo.kemendikdasmen.go.id/sp/2/242000
+Prov. Nusa Tenggara Timur,240000,Kab. Timor Tengah Utara,240400,https://dapo.kemendikdasmen.go.id/sp/2/240400
+Prov. Nusa Tenggara Timur,240000,Kab. Ende,240900,https://dapo.kemendikdasmen.go.id/sp/2/240900
+Prov. Nusa Tenggara Timur,240000,Kab. Flores Timur,240700,https://dapo.kemendikdasmen.go.id/sp/2/240700
+Prov. Nusa Tenggara Timur,240000,Kab. Manggarai,241100,https://dapo.kemendikdasmen.go.id/sp/2/241100
+Prov. Nusa Tenggara Timur,240000,Kab. Sumba Timur,241200,https://dapo.kemendikdasmen.go.id/sp/2/241200
+Prov. Nusa Tenggara Timur,240000,Kab. Manggarai Barat,241600,https://dapo.kemendikdasmen.go.id/sp/2/241600
+Prov. Nusa Tenggara Timur,240000,Kota Kupang,246000,https://dapo.kemendikdasmen.go.id/sp/2/246000
+Prov. Nusa Tenggara Timur,240000,Kab. Malaka,242200,https://dapo.kemendikdasmen.go.id/sp/2/242200
+Prov. Nusa Tenggara Timur,240000,Kab. Belu,240500,https://dapo.kemendikdasmen.go.id/sp/2/240500
+Prov. Nusa Tenggara Timur,240000,Kab. Ngada,241000,https://dapo.kemendikdasmen.go.id/sp/2/241000
+Prov. Nusa Tenggara Timur,240000,Kab. Nagekeo,241700,https://dapo.kemendikdasmen.go.id/sp/2/241700
+Prov. Nusa Tenggara Timur,240000,Kab. Rote Ndao,241500,https://dapo.kemendikdasmen.go.id/sp/2/241500
+Prov. Nusa Tenggara Timur,240000,Kab. Lembata,241400,https://dapo.kemendikdasmen.go.id/sp/2/241400
+Prov. Nusa Tenggara Timur,240000,Kab. Sumba Barat,241300,https://dapo.kemendikdasmen.go.id/sp/2/241300
+Prov. Nusa Tenggara Timur,240000,Kab. Sabu Raijua,242100,https://dapo.kemendikdasmen.go.id/sp/2/242100
+Prov. Nusa Tenggara Timur,240000,Kab. Sumba Tengah,241800,https://dapo.kemendikdasmen.go.id/sp/2/241800
+Prov. Lampung,120000,Kab. Lampung Tengah,120200,https://dapo.kemendikdasmen.go.id/sp/2/120200
+Prov. Lampung,120000,Kab. Lampung Timur,120700,https://dapo.kemendikdasmen.go.id/sp/2/120700
+Prov. Lampung,120000,Kab. Lampung Selatan,120100,https://dapo.kemendikdasmen.go.id/sp/2/120100
+Prov. Lampung,120000,Kota Bandar Lampung,126000,https://dapo.kemendikdasmen.go.id/sp/2/126000
+Prov. Lampung,120000,Kab. Tanggamus,120600,https://dapo.kemendikdasmen.go.id/sp/2/120600
+Prov. Lampung,120000,Kab. Lampung Utara,120300,https://dapo.kemendikdasmen.go.id/sp/2/120300
+Prov. Lampung,120000,Kab. Way Kanan,120800,https://dapo.kemendikdasmen.go.id/sp/2/120800
+Prov. Lampung,120000,Kab. Pesawaran,120900,https://dapo.kemendikdasmen.go.id/sp/2/120900
+Prov. Lampung,120000,Kab. Tulang Bawang,120500,https://dapo.kemendikdasmen.go.id/sp/2/120500
+Prov. Lampung,120000,Kab. Pringsewu,121000,https://dapo.kemendikdasmen.go.id/sp/2/121000
+Prov. Lampung,120000,Kab. Lampung Barat,120400,https://dapo.kemendikdasmen.go.id/sp/2/120400
+Prov. Lampung,120000,Kab. Tulang Bawang Barat,121200,https://dapo.kemendikdasmen.go.id/sp/2/121200
+Prov. Lampung,120000,Kab. Mesuji,121100,https://dapo.kemendikdasmen.go.id/sp/2/121100
+Prov. Lampung,120000,Kab. Pesisir Barat,121300,https://dapo.kemendikdasmen.go.id/sp/2/121300
+Prov. Lampung,120000,Kota Metro,126100,https://dapo.kemendikdasmen.go.id/sp/2/126100
+Prov. Sumatera Selatan,110000,Kota Palembang,116000,https://dapo.kemendikdasmen.go.id/sp/2/116000
+Prov. Sumatera Selatan,110000,Kab. Banyuasin,110700,https://dapo.kemendikdasmen.go.id/sp/2/110700
+Prov. Sumatera Selatan,110000,Kab. Ogan Komering Ilir,110200,https://dapo.kemendikdasmen.go.id/sp/2/110200
+Prov. Sumatera Selatan,110000,Kab. Musi Banyuasin,110100,https://dapo.kemendikdasmen.go.id/sp/2/110100
+Prov. Sumatera Selatan,110000,Kab. Ogan Komering Ulu Timur,110800,https://dapo.kemendikdasmen.go.id/sp/2/110800
+Prov. Sumatera Selatan,110000,Kab. Muara Enim,110400,https://dapo.kemendikdasmen.go.id/sp/2/110400
+Prov. Sumatera Selatan,110000,Kab. Ogan Ilir,111000,https://dapo.kemendikdasmen.go.id/sp/2/111000
+Prov. Sumatera Selatan,110000,Kab. Lahat,110500,https://dapo.kemendikdasmen.go.id/sp/2/110500
+Prov. Sumatera Selatan,110000,Kab. Musi Rawas,110600,https://dapo.kemendikdasmen.go.id/sp/2/110600
+Prov. Sumatera Selatan,110000,Kab. Ogan Komering Ulu Selatan,110900,https://dapo.kemendikdasmen.go.id/sp/2/110900
+Prov. Sumatera Selatan,110000,Kab. Ogan Komering Ulu,110300,https://dapo.kemendikdasmen.go.id/sp/2/110300
+Prov. Sumatera Selatan,110000,Kab. Empat Lawang,111100,https://dapo.kemendikdasmen.go.id/sp/2/111100
+Prov. Sumatera Selatan,110000,Kab. Musi Rawas Utara,111300,https://dapo.kemendikdasmen.go.id/sp/2/111300
+Prov. Sumatera Selatan,110000,Kab. Penukal Abab Lematang Ilir,111200,https://dapo.kemendikdasmen.go.id/sp/2/111200
+Prov. Sumatera Selatan,110000,Kota Lubuk Linggau,116200,https://dapo.kemendikdasmen.go.id/sp/2/116200
+Prov. Sumatera Selatan,110000,Kota Prabumulih,116100,https://dapo.kemendikdasmen.go.id/sp/2/116100
+Prov. Sumatera Selatan,110000,Kota Pagar Alam,116300,https://dapo.kemendikdasmen.go.id/sp/2/116300
+Prov. Aceh,60000,Kab. Aceh Utara,60300,https://dapo.kemendikdasmen.go.id/sp/2/060300
+Prov. Aceh,60000,Kab. Aceh Timur,60400,https://dapo.kemendikdasmen.go.id/sp/2/060400
+Prov. Aceh,60000,Kab. Bireuen,61200,https://dapo.kemendikdasmen.go.id/sp/2/061200
+Prov. Aceh,60000,Kab. Aceh Selatan,60700,https://dapo.kemendikdasmen.go.id/sp/2/060700
+Prov. Aceh,60000,Kab. Aceh Besar,60100,https://dapo.kemendikdasmen.go.id/sp/2/060100
+Prov. Aceh,60000,Kab. Pidie,60200,https://dapo.kemendikdasmen.go.id/sp/2/060200
+Prov. Aceh,60000,Kab. Aceh Tenggara,60800,https://dapo.kemendikdasmen.go.id/sp/2/060800
+Prov. Aceh,60000,Kab. Aceh Tengah,60500,https://dapo.kemendikdasmen.go.id/sp/2/060500
+Prov. Aceh,60000,Kab. Aceh Tamiang,61400,https://dapo.kemendikdasmen.go.id/sp/2/061400
+Prov. Aceh,60000,Kab. Bener Meriah,61900,https://dapo.kemendikdasmen.go.id/sp/2/061900
+Prov. Aceh,60000,Kab. Aceh Barat,60600,https://dapo.kemendikdasmen.go.id/sp/2/060600
+Prov. Aceh,60000,Kota Banda Aceh,66100,https://dapo.kemendikdasmen.go.id/sp/2/066100
+Prov. Aceh,60000,Kab. Aceh Jaya,61600,https://dapo.kemendikdasmen.go.id/sp/2/061600
+Prov. Aceh,60000,Kab. Nagan Raya,61500,https://dapo.kemendikdasmen.go.id/sp/2/061500
+Prov. Aceh,60000,Kab. Aceh Barat Daya,61700,https://dapo.kemendikdasmen.go.id/sp/2/061700
+Prov. Aceh,60000,Kab. Aceh Singkil,61300,https://dapo.kemendikdasmen.go.id/sp/2/061300
+Prov. Aceh,60000,Kab. Simeulue,61100,https://dapo.kemendikdasmen.go.id/sp/2/061100
+Prov. Aceh,60000,Kab. Pidie Jaya,62000,https://dapo.kemendikdasmen.go.id/sp/2/062000
+Prov. Aceh,60000,Kota Subulussalam,66400,https://dapo.kemendikdasmen.go.id/sp/2/066400
+Prov. Aceh,60000,Kota Lhokseumawe,66200,https://dapo.kemendikdasmen.go.id/sp/2/066200
+Prov. Aceh,60000,Kota Langsa,66300,https://dapo.kemendikdasmen.go.id/sp/2/066300
+Prov. Aceh,60000,Kab. Gayo Lues,61800,https://dapo.kemendikdasmen.go.id/sp/2/061800
+Prov. Aceh,60000,Kota Sabang,66000,https://dapo.kemendikdasmen.go.id/sp/2/066000
+Prov. Riau,90000,Kab. Kampar,90100,https://dapo.kemendikdasmen.go.id/sp/2/090100
+Prov. Riau,90000,Kota Pekanbaru,96000,https://dapo.kemendikdasmen.go.id/sp/2/096000
+Prov. Riau,90000,Kab. Indragiri Hilir,90500,https://dapo.kemendikdasmen.go.id/sp/2/090500
+Prov. Riau,90000,Kab. Rokan Hulu,90900,https://dapo.kemendikdasmen.go.id/sp/2/090900
+Prov. Riau,90000,Kab. Rokan Hilir,91000,https://dapo.kemendikdasmen.go.id/sp/2/091000
+Prov. Riau,90000,Kab. Bengkalis,90200,https://dapo.kemendikdasmen.go.id/sp/2/090200
+Prov. Riau,90000,Kab. Siak,91100,https://dapo.kemendikdasmen.go.id/sp/2/091100
+Prov. Riau,90000,Kab. Kuantan Singingi,91400,https://dapo.kemendikdasmen.go.id/sp/2/091400
+Prov. Riau,90000,Kab. Indragiri Hulu,90400,https://dapo.kemendikdasmen.go.id/sp/2/090400
+Prov. Riau,90000,Kab. Pelalawan,90800,https://dapo.kemendikdasmen.go.id/sp/2/090800
+Prov. Riau,90000,Kab. Kepulauan Meranti,91500,https://dapo.kemendikdasmen.go.id/sp/2/091500
+Prov. Riau,90000,Kota Dumai,96200,https://dapo.kemendikdasmen.go.id/sp/2/096200
+Prov. Nusa Tenggara Barat,230000,Kab. Lombok Timur,230300,https://dapo.kemendikdasmen.go.id/sp/2/230300
+Prov. Nusa Tenggara Barat,230000,Kab. Lombok Tengah,230200,https://dapo.kemendikdasmen.go.id/sp/2/230200
+Prov. Nusa Tenggara Barat,230000,Kab. Bima,230600,https://dapo.kemendikdasmen.go.id/sp/2/230600
+Prov. Nusa Tenggara Barat,230000,Kab. Lombok Barat,230100,https://dapo.kemendikdasmen.go.id/sp/2/230100
+Prov. Nusa Tenggara Barat,230000,Kab. Sumbawa,230400,https://dapo.kemendikdasmen.go.id/sp/2/230400
+Prov. Nusa Tenggara Barat,230000,Kab. Dompu,230500,https://dapo.kemendikdasmen.go.id/sp/2/230500
+Prov. Nusa Tenggara Barat,230000,Kota Mataram,236000,https://dapo.kemendikdasmen.go.id/sp/2/236000
+Prov. Nusa Tenggara Barat,230000,Kab. Lombok Utara,230800,https://dapo.kemendikdasmen.go.id/sp/2/230800
+Prov. Nusa Tenggara Barat,230000,Kab. Sumbawa Barat,230700,https://dapo.kemendikdasmen.go.id/sp/2/230700
+Prov. Nusa Tenggara Barat,230000,Kota Bima,236100,https://dapo.kemendikdasmen.go.id/sp/2/236100
+Prov. Sumatera Barat,80000,Kota Padang,86100,https://dapo.kemendikdasmen.go.id/sp/2/086100
+Prov. Sumatera Barat,80000,Kab. Agam,80100,https://dapo.kemendikdasmen.go.id/sp/2/080100
+Prov. Sumatera Barat,80000,Kab. Pesisir Selatan,80600,https://dapo.kemendikdasmen.go.id/sp/2/080600
+Prov. Sumatera Barat,80000,Kab. Solok,80400,https://dapo.kemendikdasmen.go.id/sp/2/080400
+Prov. Sumatera Barat,80000,Kab. Padang Pariaman,80500,https://dapo.kemendikdasmen.go.id/sp/2/080500
+Prov. Sumatera Barat,80000,Kab. Lima Puluh Kota,80300,https://dapo.kemendikdasmen.go.id/sp/2/080300
+Prov. Sumatera Barat,80000,Kab. Tanah Datar,80700,https://dapo.kemendikdasmen.go.id/sp/2/080700
+Prov. Sumatera Barat,80000,Kab. Pasaman Barat,81300,https://dapo.kemendikdasmen.go.id/sp/2/081300
+Prov. Sumatera Barat,80000,Kab. Pasaman,80200,https://dapo.kemendikdasmen.go.id/sp/2/080200
+Prov. Sumatera Barat,80000,Kab. Sijunjung,80800,https://dapo.kemendikdasmen.go.id/sp/2/080800
+Prov. Sumatera Barat,80000,Kab. Dharmasraya,81200,https://dapo.kemendikdasmen.go.id/sp/2/081200
+Prov. Sumatera Barat,80000,Kab. Solok Selatan,81100,https://dapo.kemendikdasmen.go.id/sp/2/081100
+Prov. Sumatera Barat,80000,Kab. Kepulauan Mentawai,81000,https://dapo.kemendikdasmen.go.id/sp/2/081000
+Prov. Sumatera Barat,80000,Kota Payakumbuh,86500,https://dapo.kemendikdasmen.go.id/sp/2/086500
+Prov. Sumatera Barat,80000,Kota Bukittinggi,86000,https://dapo.kemendikdasmen.go.id/sp/2/086000
+Prov. Sumatera Barat,80000,Kota Pariaman,86600,https://dapo.kemendikdasmen.go.id/sp/2/086600
+Prov. Sumatera Barat,80000,Kota Sawahlunto,86300,https://dapo.kemendikdasmen.go.id/sp/2/086300
+Prov. Sumatera Barat,80000,Kota Solok,86400,https://dapo.kemendikdasmen.go.id/sp/2/086400
+Prov. Sumatera Barat,80000,Kota Padang Panjang,86200,https://dapo.kemendikdasmen.go.id/sp/2/086200
+Prov. Kalimantan Barat,130000,Kab. Ketapang,130600,https://dapo.kemendikdasmen.go.id/sp/2/130600
+Prov. Kalimantan Barat,130000,Kab. Sambas,130100,https://dapo.kemendikdasmen.go.id/sp/2/130100
+Prov. Kalimantan Barat,130000,Kab. Sintang,130400,https://dapo.kemendikdasmen.go.id/sp/2/130400
+Prov. Kalimantan Barat,130000,Kab. Kubu Raya,131300,https://dapo.kemendikdasmen.go.id/sp/2/131300
+Prov. Kalimantan Barat,130000,Kab. Sanggau,130300,https://dapo.kemendikdasmen.go.id/sp/2/130300
+Prov. Kalimantan Barat,130000,Kab. Landak,130900,https://dapo.kemendikdasmen.go.id/sp/2/130900
+Prov. Kalimantan Barat,130000,Kab. Kapuas Hulu,130500,https://dapo.kemendikdasmen.go.id/sp/2/130500
+Prov. Kalimantan Barat,130000,Kota Pontianak,136000,https://dapo.kemendikdasmen.go.id/sp/2/136000
+Prov. Kalimantan Barat,130000,Kab. Bengkayang,130800,https://dapo.kemendikdasmen.go.id/sp/2/130800
+Prov. Kalimantan Barat,130000,Kab. Melawi,131100,https://dapo.kemendikdasmen.go.id/sp/2/131100
+Prov. Kalimantan Barat,130000,Kab. Sekadau,131000,https://dapo.kemendikdasmen.go.id/sp/2/131000
+Prov. Kalimantan Barat,130000,Kab. Mempawah,130200,https://dapo.kemendikdasmen.go.id/sp/2/130200
+Prov. Kalimantan Barat,130000,Kota Singkawang,136100,https://dapo.kemendikdasmen.go.id/sp/2/136100
+Prov. Kalimantan Barat,130000,Kab. Kayong Utara,131200,https://dapo.kemendikdasmen.go.id/sp/2/131200
+Prov. D.K.I. Jakarta,10000,Kota Adm. Jakarta Timur,16400,https://dapo.kemendikdasmen.go.id/sp/2/016400
+Prov. D.K.I. Jakarta,10000,Kota Adm. Jakarta Barat,16200,https://dapo.kemendikdasmen.go.id/sp/2/016200
+Prov. D.K.I. Jakarta,10000,Kota Adm. Jakarta Selatan,16300,https://dapo.kemendikdasmen.go.id/sp/2/016300
+Prov. D.K.I. Jakarta,10000,Kota Adm. Jakarta Utara,16100,https://dapo.kemendikdasmen.go.id/sp/2/016100
+Prov. D.K.I. Jakarta,10000,Kota Adm. Jakarta Pusat,16000,https://dapo.kemendikdasmen.go.id/sp/2/016000
+Prov. D.K.I. Jakarta,10000,Kab. Adm. Kep. Seribu,10100,https://dapo.kemendikdasmen.go.id/sp/2/010100
+Prov. Kalimantan Selatan,150000,Kab. Banjar,150100,https://dapo.kemendikdasmen.go.id/sp/2/150100
+Prov. Kalimantan Selatan,150000,Kota Banjarmasin,156000,https://dapo.kemendikdasmen.go.id/sp/2/156000
+Prov. Kalimantan Selatan,150000,Kab. Barito Kuala,150300,https://dapo.kemendikdasmen.go.id/sp/2/150300
+Prov. Kalimantan Selatan,150000,Kab. Kotabaru,150900,https://dapo.kemendikdasmen.go.id/sp/2/150900
+Prov. Kalimantan Selatan,150000,Kab. Tanah Laut,150200,https://dapo.kemendikdasmen.go.id/sp/2/150200
+Prov. Kalimantan Selatan,150000,Kab. Tanah Bumbu,151100,https://dapo.kemendikdasmen.go.id/sp/2/151100
+Prov. Kalimantan Selatan,150000,Kab. Tabalong,150800,https://dapo.kemendikdasmen.go.id/sp/2/150800
+Prov. Kalimantan Selatan,150000,Kab. Hulu Sungai Tengah,150600,https://dapo.kemendikdasmen.go.id/sp/2/150600
+Prov. Kalimantan Selatan,150000,Kab. Hulu Sungai Selatan,150500,https://dapo.kemendikdasmen.go.id/sp/2/150500
+Prov. Kalimantan Selatan,150000,Kab. Hulu Sungai Utara,150700,https://dapo.kemendikdasmen.go.id/sp/2/150700
+Prov. Kalimantan Selatan,150000,Kab. Balangan,151000,https://dapo.kemendikdasmen.go.id/sp/2/151000
+Prov. Kalimantan Selatan,150000,Kota Banjarbaru,156100,https://dapo.kemendikdasmen.go.id/sp/2/156100
+Prov. Kalimantan Selatan,150000,Kab. Tapin,150400,https://dapo.kemendikdasmen.go.id/sp/2/150400
+Prov. Sulawesi Tengah,180000,Kab. Parigi Moutong,180800,https://dapo.kemendikdasmen.go.id/sp/2/180800
+Prov. Sulawesi Tengah,180000,Kab. Banggai,180400,https://dapo.kemendikdasmen.go.id/sp/2/180400
+Prov. Sulawesi Tengah,180000,Kab. Donggala,180200,https://dapo.kemendikdasmen.go.id/sp/2/180200
+Prov. Sulawesi Tengah,180000,Kab. Sigi,181000,https://dapo.kemendikdasmen.go.id/sp/2/181000
+Prov. Sulawesi Tengah,180000,Kab. Poso,180300,https://dapo.kemendikdasmen.go.id/sp/2/180300
+Prov. Sulawesi Tengah,180000,Kota Palu,186000,https://dapo.kemendikdasmen.go.id/sp/2/186000
+Prov. Sulawesi Tengah,180000,Kab. Tojo Una Una,180900,https://dapo.kemendikdasmen.go.id/sp/2/180900
+Prov. Sulawesi Tengah,180000,Kab. Tolitoli,180600,https://dapo.kemendikdasmen.go.id/sp/2/180600
+Prov. Sulawesi Tengah,180000,Kab. Morowali,180700,https://dapo.kemendikdasmen.go.id/sp/2/180700
+Prov. Sulawesi Tengah,180000,Kab. Morowali Utara,181200,https://dapo.kemendikdasmen.go.id/sp/2/181200
+Prov. Sulawesi Tengah,180000,Kab. Banggai Kepulauan,180100,https://dapo.kemendikdasmen.go.id/sp/2/180100
+Prov. Sulawesi Tengah,180000,Kab. Buol,180500,https://dapo.kemendikdasmen.go.id/sp/2/180500
+Prov. Sulawesi Tengah,180000,Kab. Banggai Laut,181100,https://dapo.kemendikdasmen.go.id/sp/2/181100
+Prov. D.I. Yogyakarta,40000,Kab. Sleman,40200,https://dapo.kemendikdasmen.go.id/sp/2/040200
+Prov. D.I. Yogyakarta,40000,Kab. Bantul,40100,https://dapo.kemendikdasmen.go.id/sp/2/040100
+Prov. D.I. Yogyakarta,40000,Kab. Gunungkidul,40300,https://dapo.kemendikdasmen.go.id/sp/2/040300
+Prov. D.I. Yogyakarta,40000,Kab. Kulon Progo,40400,https://dapo.kemendikdasmen.go.id/sp/2/040400
+Prov. D.I. Yogyakarta,40000,Kota Yogyakarta,46000,https://dapo.kemendikdasmen.go.id/sp/2/046000
+Prov. Sulawesi Tenggara,200000,Kab. Konawe Selatan,200500,https://dapo.kemendikdasmen.go.id/sp/2/200500
+Prov. Sulawesi Tenggara,200000,Kab. Muna,200200,https://dapo.kemendikdasmen.go.id/sp/2/200200
+Prov. Sulawesi Tenggara,200000,Kab. Konawe,200100,https://dapo.kemendikdasmen.go.id/sp/2/200100
+Prov. Sulawesi Tenggara,200000,Kab. Bombana,200700,https://dapo.kemendikdasmen.go.id/sp/2/200700
+Prov. Sulawesi Tenggara,200000,Kab. Kolaka,200400,https://dapo.kemendikdasmen.go.id/sp/2/200400
+Prov. Sulawesi Tenggara,200000,Kota Kendari,206000,https://dapo.kemendikdasmen.go.id/sp/2/206000
+Prov. Sulawesi Tenggara,200000,Kab. Buton,200300,https://dapo.kemendikdasmen.go.id/sp/2/200300
+Prov. Sulawesi Tenggara,200000,Kab. Kolaka Timur,201100,https://dapo.kemendikdasmen.go.id/sp/2/201100
+Prov. Sulawesi Tenggara,200000,Kab. Wakatobi,200600,https://dapo.kemendikdasmen.go.id/sp/2/200600
+Prov. Sulawesi Tenggara,200000,Kab. Muna Barat,201300,https://dapo.kemendikdasmen.go.id/sp/2/201300
+Prov. Sulawesi Tenggara,200000,Kab. Kolaka Utara,200800,https://dapo.kemendikdasmen.go.id/sp/2/200800
+Prov. Sulawesi Tenggara,200000,Kab. Konawe Utara,200900,https://dapo.kemendikdasmen.go.id/sp/2/200900
+Prov. Sulawesi Tenggara,200000,Kab. Buton Tengah,201600,https://dapo.kemendikdasmen.go.id/sp/2/201600
+Prov. Sulawesi Tenggara,200000,Kab. Buton Utara,201000,https://dapo.kemendikdasmen.go.id/sp/2/201000
+Prov. Sulawesi Tenggara,200000,Kota Bau Bau,206100,https://dapo.kemendikdasmen.go.id/sp/2/206100
+Prov. Sulawesi Tenggara,200000,Kab. Buton Selatan,201400,https://dapo.kemendikdasmen.go.id/sp/2/201400
+Prov. Sulawesi Tenggara,200000,Kab. Konawe Kepulauan,201200,https://dapo.kemendikdasmen.go.id/sp/2/201200
+Prov. Sulawesi Utara,170000,Kab. Minahasa,170200,https://dapo.kemendikdasmen.go.id/sp/2/170200
+Prov. Sulawesi Utara,170000,Kota Manado,176000,https://dapo.kemendikdasmen.go.id/sp/2/176000
+Prov. Sulawesi Utara,170000,Kab. Bolaang Mongondow,170100,https://dapo.kemendikdasmen.go.id/sp/2/170100
+Prov. Sulawesi Utara,170000,Kab. Minahasa Selatan,170500,https://dapo.kemendikdasmen.go.id/sp/2/170500
+Prov. Sulawesi Utara,170000,Kab. Minahasa Utara,170600,https://dapo.kemendikdasmen.go.id/sp/2/170600
+Prov. Sulawesi Utara,170000,Kab. Kepulauan Sangihe,170300,https://dapo.kemendikdasmen.go.id/sp/2/170300
+Prov. Sulawesi Utara,170000,Kab. Kepulauan Talaud,170400,https://dapo.kemendikdasmen.go.id/sp/2/170400
+Prov. Sulawesi Utara,170000,Kab. Minahasa Tenggara,171000,https://dapo.kemendikdasmen.go.id/sp/2/171000
+Prov. Sulawesi Utara,170000,Kota Bitung,176100,https://dapo.kemendikdasmen.go.id/sp/2/176100
+Prov. Sulawesi Utara,170000,Kab. Bolaang Mongondow Utara,170800,https://dapo.kemendikdasmen.go.id/sp/2/170800
+Prov. Sulawesi Utara,170000,Kab. Kep. Siau Tagulandang Biaro,170900,https://dapo.kemendikdasmen.go.id/sp/2/170900
+Prov. Sulawesi Utara,170000,Kab. Bolaang Mongondow Selatan,171200,https://dapo.kemendikdasmen.go.id/sp/2/171200
+Prov. Sulawesi Utara,170000,Kab. Bolaang Mongondow Timur,171100,https://dapo.kemendikdasmen.go.id/sp/2/171100
+Prov. Sulawesi Utara,170000,Kota Kotamobagu,176300,https://dapo.kemendikdasmen.go.id/sp/2/176300
+Prov. Sulawesi Utara,170000,Kota Tomohon,176200,https://dapo.kemendikdasmen.go.id/sp/2/176200
+Prov. Bali,220000,Kab. Buleleng,220100,https://dapo.kemendikdasmen.go.id/sp/2/220100
+Prov. Bali,220000,Kota Denpasar,226000,https://dapo.kemendikdasmen.go.id/sp/2/226000
+Prov. Bali,220000,Kab. Badung,220400,https://dapo.kemendikdasmen.go.id/sp/2/220400
+Prov. Bali,220000,Kab. Tabanan,220300,https://dapo.kemendikdasmen.go.id/sp/2/220300
+Prov. Bali,220000,Kab. Karangasem,220800,https://dapo.kemendikdasmen.go.id/sp/2/220800
+Prov. Bali,220000,Kab. Gianyar,220500,https://dapo.kemendikdasmen.go.id/sp/2/220500
+Prov. Bali,220000,Kab. Jembrana,220200,https://dapo.kemendikdasmen.go.id/sp/2/220200
+Prov. Bali,220000,Kab. Bangli,220700,https://dapo.kemendikdasmen.go.id/sp/2/220700
+Prov. Bali,220000,Kab. Klungkung,220600,https://dapo.kemendikdasmen.go.id/sp/2/220600
+Prov. Maluku,210000,Kab. Maluku Tengah,210100,https://dapo.kemendikdasmen.go.id/sp/2/210100
+Prov. Maluku,210000,Kab. Seram Bagian Barat,210500,https://dapo.kemendikdasmen.go.id/sp/2/210500
+Prov. Maluku,210000,Kota Ambon,216000,https://dapo.kemendikdasmen.go.id/sp/2/216000
+Prov. Maluku,210000,Kab. Maluku Tenggara,210200,https://dapo.kemendikdasmen.go.id/sp/2/210200
+Prov. Maluku,210000,Kab. Seram Bagian Timur,210600,https://dapo.kemendikdasmen.go.id/sp/2/210600
+Prov. Maluku,210000,Kab. Maluku Barat Daya,210800,https://dapo.kemendikdasmen.go.id/sp/2/210800
+Prov. Maluku,210000,Kab. Buru,210300,https://dapo.kemendikdasmen.go.id/sp/2/210300
+Prov. Maluku,210000,Kab. Kepulauan Aru,210700,https://dapo.kemendikdasmen.go.id/sp/2/210700
+Prov. Maluku,210000,Kab. Buru Selatan,210900,https://dapo.kemendikdasmen.go.id/sp/2/210900
+Prov. Maluku,210000,Kab. Kepulauan Tanimbar,210400,https://dapo.kemendikdasmen.go.id/sp/2/210400
+Prov. Maluku,210000,Kota Tual,216100,https://dapo.kemendikdasmen.go.id/sp/2/216100
+Prov. Bengkulu,260000,Kab. Bengkulu Utara,260100,https://dapo.kemendikdasmen.go.id/sp/2/260100
+Prov. Bengkulu,260000,Kota Bengkulu,266000,https://dapo.kemendikdasmen.go.id/sp/2/266000
+Prov. Bengkulu,260000,Kab. Seluma,260800,https://dapo.kemendikdasmen.go.id/sp/2/260800
+Prov. Bengkulu,260000,Kab. Kaur,260700,https://dapo.kemendikdasmen.go.id/sp/2/260700
+Prov. Bengkulu,260000,Kab. Rejang Lebong,260200,https://dapo.kemendikdasmen.go.id/sp/2/260200
+Prov. Bengkulu,260000,Kab. Mukomuko,260400,https://dapo.kemendikdasmen.go.id/sp/2/260400
+Prov. Bengkulu,260000,Kab. Bengkulu Selatan,260300,https://dapo.kemendikdasmen.go.id/sp/2/260300
+Prov. Bengkulu,260000,Kab. Bengkulu Tengah,260900,https://dapo.kemendikdasmen.go.id/sp/2/260900
+Prov. Bengkulu,260000,Kab. Kepahiang,260500,https://dapo.kemendikdasmen.go.id/sp/2/260500
+Prov. Bengkulu,260000,Kab. Lebong,260600,https://dapo.kemendikdasmen.go.id/sp/2/260600
+Prov. Maluku Utara,270000,Kab. Halmahera Selatan,270500,https://dapo.kemendikdasmen.go.id/sp/2/270500
+Prov. Maluku Utara,270000,Kab. halmahera Utara,270400,https://dapo.kemendikdasmen.go.id/sp/2/270400
+Prov. Maluku Utara,270000,Kab. Halmahera Barat,270300,https://dapo.kemendikdasmen.go.id/sp/2/270300
+Prov. Maluku Utara,270000,Kab. Kepulauan Sula,270700,https://dapo.kemendikdasmen.go.id/sp/2/270700
+Prov. Maluku Utara,270000,Kota Tidore Kepulauan,276100,https://dapo.kemendikdasmen.go.id/sp/2/276100
+Prov. Maluku Utara,270000,Kab. Pulau Taliabu,270100,https://dapo.kemendikdasmen.go.id/sp/2/270100
+Prov. Maluku Utara,270000,Kab. Halmahera Timur,270600,https://dapo.kemendikdasmen.go.id/sp/2/270600
+Prov. Maluku Utara,270000,Kota Ternate,276000,https://dapo.kemendikdasmen.go.id/sp/2/276000
+Prov. Maluku Utara,270000,Kab. Pulau Morotai,270800,https://dapo.kemendikdasmen.go.id/sp/2/270800
+Prov. Maluku Utara,270000,Kab. Halmahera Tengah,270200,https://dapo.kemendikdasmen.go.id/sp/2/270200
+Prov. Sulawesi Barat,330000,Kab. Polewali Mandar,330300,https://dapo.kemendikdasmen.go.id/sp/2/330300
+Prov. Sulawesi Barat,330000,Kab. Mamasa,330400,https://dapo.kemendikdasmen.go.id/sp/2/330400
+Prov. Sulawesi Barat,330000,Kab. Mamuju,330100,https://dapo.kemendikdasmen.go.id/sp/2/330100
+Prov. Sulawesi Barat,330000,Kab. Majene,330500,https://dapo.kemendikdasmen.go.id/sp/2/330500
+Prov. Sulawesi Barat,330000,Kab. Pasangkayu,330200,https://dapo.kemendikdasmen.go.id/sp/2/330200
+Prov. Sulawesi Barat,330000,Kab. Mamuju Tengah,330600,https://dapo.kemendikdasmen.go.id/sp/2/330600
+Prov. Kepulauan Riau,310000,Kota Batam,316000,https://dapo.kemendikdasmen.go.id/sp/2/316000
+Prov. Kepulauan Riau,310000,Kab. Karimun,310200,https://dapo.kemendikdasmen.go.id/sp/2/310200
+Prov. Kepulauan Riau,310000,Kab. Bintan,310100,https://dapo.kemendikdasmen.go.id/sp/2/310100
+Prov. Kepulauan Riau,310000,Kab. Lingga,310400,https://dapo.kemendikdasmen.go.id/sp/2/310400
+Prov. Kepulauan Riau,310000,Kab. Natuna,310300,https://dapo.kemendikdasmen.go.id/sp/2/310300
+Prov. Kepulauan Riau,310000,Kota Tanjung Pinang,316100,https://dapo.kemendikdasmen.go.id/sp/2/316100
+Prov. Kepulauan Riau,310000,Kab. Kepulauan Anambas,310500,https://dapo.kemendikdasmen.go.id/sp/2/310500
+Prov. Gorontalo,300000,Kab. Gorontalo,300200,https://dapo.kemendikdasmen.go.id/sp/2/300200
+Prov. Gorontalo,300000,Kab. Bone Bolango,300400,https://dapo.kemendikdasmen.go.id/sp/2/300400
+Prov. Gorontalo,300000,Kab. Boalemo,300100,https://dapo.kemendikdasmen.go.id/sp/2/300100
+Prov. Gorontalo,300000,Kab. Pohuwato,300300,https://dapo.kemendikdasmen.go.id/sp/2/300300
+Prov. Gorontalo,300000,Kab. Gorontalo Utara,300500,https://dapo.kemendikdasmen.go.id/sp/2/300500
+Prov. Gorontalo,300000,Kota Gorontalo,306000,https://dapo.kemendikdasmen.go.id/sp/2/306000
+Prov. Papua,250000,Kab. Jayapura,250100,https://dapo.kemendikdasmen.go.id/sp/2/250100
+Prov. Papua,250000,Kab. Biak Numfor,250200,https://dapo.kemendikdasmen.go.id/sp/2/250200
+Prov. Papua,250000,Kota Jayapura,256000,https://dapo.kemendikdasmen.go.id/sp/2/256000
+Prov. Papua,250000,Kab. Kepulauan Yapen,250300,https://dapo.kemendikdasmen.go.id/sp/2/250300
+Prov. Papua,250000,Kab. Keerom,252000,https://dapo.kemendikdasmen.go.id/sp/2/252000
+Prov. Papua,250000,Kab. Sarmi,251900,https://dapo.kemendikdasmen.go.id/sp/2/251900
+Prov. Papua,250000,Kab. Mamberamo Raya,252800,https://dapo.kemendikdasmen.go.id/sp/2/252800
+Prov. Papua,250000,Kab. Waropen,252600,https://dapo.kemendikdasmen.go.id/sp/2/252600
+Prov. Papua,250000,Kab. Supiori,252700,https://dapo.kemendikdasmen.go.id/sp/2/252700
+Prov. Kepulauan Bangka Belitung,290000,Kab. Bangka,290100,https://dapo.kemendikdasmen.go.id/sp/2/290100
+Prov. Kepulauan Bangka Belitung,290000,Kab. Bangka Barat,290400,https://dapo.kemendikdasmen.go.id/sp/2/290400
+Prov. Kepulauan Bangka Belitung,290000,Kab. Bangka Tengah,290300,https://dapo.kemendikdasmen.go.id/sp/2/290300
+Prov. Kepulauan Bangka Belitung,290000,Kab. Belitung,290200,https://dapo.kemendikdasmen.go.id/sp/2/290200
+Prov. Kepulauan Bangka Belitung,290000,Kota Pangkal Pinang,296000,https://dapo.kemendikdasmen.go.id/sp/2/296000
+Prov. Kepulauan Bangka Belitung,290000,Kab. Bangka Selatan,290500,https://dapo.kemendikdasmen.go.id/sp/2/290500
+Prov. Kepulauan Bangka Belitung,290000,Kab. Belitung Timur,290600,https://dapo.kemendikdasmen.go.id/sp/2/290600
+Prov. Papua Pegunungan,380000,Kab. Jayawijaya,380100,https://dapo.kemendikdasmen.go.id/sp/2/380100
+Prov. Papua Pegunungan,380000,Kab. Yahukimo,380300,https://dapo.kemendikdasmen.go.id/sp/2/380300
+Prov. Papua Pegunungan,380000,Kab. Lanny Jaya,380700,https://dapo.kemendikdasmen.go.id/sp/2/380700
+Prov. Papua Pegunungan,380000,Kab. Pegunungan Bintang,380200,https://dapo.kemendikdasmen.go.id/sp/2/380200
+Prov. Papua Pegunungan,380000,Kab. Tolikara,380400,https://dapo.kemendikdasmen.go.id/sp/2/380400
+Prov. Papua Pegunungan,380000,Kab. Yalimo,380600,https://dapo.kemendikdasmen.go.id/sp/2/380600
+Prov. Papua Pegunungan,380000,Kab. Mamberamo Tengah,380500,https://dapo.kemendikdasmen.go.id/sp/2/380500
+Prov. Papua Pegunungan,380000,Kab. Nduga,380800,https://dapo.kemendikdasmen.go.id/sp/2/380800
+Prov. Papua Tengah,360000,Kab. Nabire,360100,https://dapo.kemendikdasmen.go.id/sp/2/360100
+Prov. Papua Tengah,360000,Kab. Mimika,360400,https://dapo.kemendikdasmen.go.id/sp/2/360400
+Prov. Papua Tengah,360000,Kab. Paniai,360300,https://dapo.kemendikdasmen.go.id/sp/2/360300
+Prov. Papua Tengah,360000,Kab. Deiyai,360800,https://dapo.kemendikdasmen.go.id/sp/2/360800
+Prov. Papua Tengah,360000,Kab. Dogiyai,360600,https://dapo.kemendikdasmen.go.id/sp/2/360600
+Prov. Papua Tengah,360000,Kab. Puncak,360500,https://dapo.kemendikdasmen.go.id/sp/2/360500
+Prov. Papua Tengah,360000,Kab. Puncak Jaya,360200,https://dapo.kemendikdasmen.go.id/sp/2/360200
+Prov. Papua Tengah,360000,Kab. Intan Jaya,360700,https://dapo.kemendikdasmen.go.id/sp/2/360700
+Prov. Papua Barat,320000,Kab. Manokwari,320500,https://dapo.kemendikdasmen.go.id/sp/2/320500
+Prov. Papua Barat,320000,Kab. Teluk Bintuni,320400,https://dapo.kemendikdasmen.go.id/sp/2/320400
+Prov. Papua Barat,320000,Kab. Fak Fak,320100,https://dapo.kemendikdasmen.go.id/sp/2/320100
+Prov. Papua Barat,320000,Kab. Kaimana,320200,https://dapo.kemendikdasmen.go.id/sp/2/320200
+Prov. Papua Barat,320000,Kab. Teluk Wondama,320300,https://dapo.kemendikdasmen.go.id/sp/2/320300
+Prov. Papua Barat,320000,Kab. Pegunungan Arfak,321100,https://dapo.kemendikdasmen.go.id/sp/2/321100
+Prov. Papua Barat,320000,Kab. Manokwari Selatan,321200,https://dapo.kemendikdasmen.go.id/sp/2/321200
+Prov. Papua Barat Daya,390000,Kab. Sorong,390400,https://dapo.kemendikdasmen.go.id/sp/2/390400
+Prov. Papua Barat Daya,390000,Kota Sorong,390600,https://dapo.kemendikdasmen.go.id/sp/2/390600
+Prov. Papua Barat Daya,390000,Kab. Raja Ampat,390200,https://dapo.kemendikdasmen.go.id/sp/2/390200
+Prov. Papua Barat Daya,390000,Kab. Sorong Selatan,390300,https://dapo.kemendikdasmen.go.id/sp/2/390300
+Prov. Papua Barat Daya,390000,Kab. Tambrauw,390500,https://dapo.kemendikdasmen.go.id/sp/2/390500
+Prov. Papua Barat Daya,390000,Kab. Maybrat,390100,https://dapo.kemendikdasmen.go.id/sp/2/390100
+Prov. Papua Selatan,370000,Kab. Merauke,370100,https://dapo.kemendikdasmen.go.id/sp/2/370100
+Prov. Papua Selatan,370000,Kab. Mappi,370300,https://dapo.kemendikdasmen.go.id/sp/2/370300
+Prov. Papua Selatan,370000,Kab. Asmat,370400,https://dapo.kemendikdasmen.go.id/sp/2/370400
+Prov. Papua Selatan,370000,Kab. Boven Digoel,370200,https://dapo.kemendikdasmen.go.id/sp/2/370200
+Luar Negeri,350000,Malaysia,350400,https://dapo.kemendikdasmen.go.id/sp/2/350400
+Luar Negeri,350000,Arab Saudi,350800,https://dapo.kemendikdasmen.go.id/sp/2/350800
+Luar Negeri,350000,Mesir,350300,https://dapo.kemendikdasmen.go.id/sp/2/350300
+Luar Negeri,350000,Myanmar,350500,https://dapo.kemendikdasmen.go.id/sp/2/350500
+Luar Negeri,350000,Singapura,351000,https://dapo.kemendikdasmen.go.id/sp/2/351000
+Luar Negeri,350000,Japan,350200,https://dapo.kemendikdasmen.go.id/sp/2/350200
+Luar Negeri,350000,Thailand,351200,https://dapo.kemendikdasmen.go.id/sp/2/351200
+Luar Negeri,350000,Taiwan,351300,https://dapo.kemendikdasmen.go.id/sp/2/351300
+Luar Negeri,350000,Belanda,350100,https://dapo.kemendikdasmen.go.id/sp/2/350100
+Luar Negeri,350000,Filipina,350600,https://dapo.kemendikdasmen.go.id/sp/2/350600
+Luar Negeri,350000,Cina,351400,https://dapo.kemendikdasmen.go.id/sp/2/351400
+Luar Negeri,350000,Brunei Darussalam,351500,https://dapo.kemendikdasmen.go.id/sp/2/351500
+Prov. Jambi,100000,Kab. Sarolangun,100300,https://dapo.kemendikdasmen.go.id/sp/2/100300
+Prov. Jambi,100000,Kab. Merangin,100900,https://dapo.kemendikdasmen.go.id/sp/2/100900
+Prov. Jambi,100000,Kota Jambi,106000,https://dapo.kemendikdasmen.go.id/sp/2/106000
+Prov. Jambi,100000,Kab. Bungo,100200,https://dapo.kemendikdasmen.go.id/sp/2/100200
+Prov. Jambi,100000,Kab. Batanghari,100100,https://dapo.kemendikdasmen.go.id/sp/2/100100
+Prov. Jambi,100000,Kab. Muaro Jambi,100700,https://dapo.kemendikdasmen.go.id/sp/2/100700
+Prov. Jambi,100000,Kab. Kerinci,100500,https://dapo.kemendikdasmen.go.id/sp/2/100500
+Prov. Jambi,100000,Kab. Tebo,100600,https://dapo.kemendikdasmen.go.id/sp/2/100600
+Prov. Jambi,100000,Kab. Tanjung Jabung Barat,100400,https://dapo.kemendikdasmen.go.id/sp/2/100400
+Prov. Jambi,100000,Kab. Tanjung Jabung Timur,100800,https://dapo.kemendikdasmen.go.id/sp/2/100800
+Prov. Jambi,100000,Kota Sungai Penuh,106100,https://dapo.kemendikdasmen.go.id/sp/2/106100
+Prov. Kalimantan Tengah,140000,Kab. Kapuas,140100,https://dapo.kemendikdasmen.go.id/sp/2/140100
+Prov. Kalimantan Tengah,140000,Kab. Kotawaringin Timur,140400,https://dapo.kemendikdasmen.go.id/sp/2/140400
+Prov. Kalimantan Tengah,140000,Kab. Katingan,140600,https://dapo.kemendikdasmen.go.id/sp/2/140600
+Prov. Kalimantan Tengah,140000,Kab. Kotawaringin Barat,140500,https://dapo.kemendikdasmen.go.id/sp/2/140500
+Prov. Kalimantan Tengah,140000,Kab. Murung Raya,141200,https://dapo.kemendikdasmen.go.id/sp/2/141200
+Prov. Kalimantan Tengah,140000,Kab. Barito Utara,140300,https://dapo.kemendikdasmen.go.id/sp/2/140300
+Prov. Kalimantan Tengah,140000,Kota Palangka Raya,146000,https://dapo.kemendikdasmen.go.id/sp/2/146000
+Prov. Kalimantan Tengah,140000,Kab. Pulang Pisau,141100,https://dapo.kemendikdasmen.go.id/sp/2/141100
+Prov. Kalimantan Tengah,140000,Kab. Seruyan,140700,https://dapo.kemendikdasmen.go.id/sp/2/140700
+Prov. Kalimantan Tengah,140000,Kab. Gunung Mas,141000,https://dapo.kemendikdasmen.go.id/sp/2/141000
+Prov. Kalimantan Tengah,140000,Kab. Barito Selatan,140200,https://dapo.kemendikdasmen.go.id/sp/2/140200
+Prov. Kalimantan Tengah,140000,Kab. Barito Timur,141300,https://dapo.kemendikdasmen.go.id/sp/2/141300
+Prov. Kalimantan Tengah,140000,Kab. Lamandau,140900,https://dapo.kemendikdasmen.go.id/sp/2/140900
+Prov. Kalimantan Tengah,140000,Kab. Sukamara,140800,https://dapo.kemendikdasmen.go.id/sp/2/140800
+Prov. Kalimantan Timur,160000,Kab. Kutai Kartanegara,160200,https://dapo.kemendikdasmen.go.id/sp/2/160200
+Prov. Kalimantan Timur,160000,Kota Samarinda,166000,https://dapo.kemendikdasmen.go.id/sp/2/166000
+Prov. Kalimantan Timur,160000,Kota Balikpapan,166100,https://dapo.kemendikdasmen.go.id/sp/2/166100
+Prov. Kalimantan Timur,160000,Kab. Kutai Timur,161000,https://dapo.kemendikdasmen.go.id/sp/2/161000
+Prov. Kalimantan Timur,160000,Kab. Paser,160100,https://dapo.kemendikdasmen.go.id/sp/2/160100
+Prov. Kalimantan Timur,160000,Kab. Kutai Barat,160900,https://dapo.kemendikdasmen.go.id/sp/2/160900
+Prov. Kalimantan Timur,160000,Kab. Berau,160300,https://dapo.kemendikdasmen.go.id/sp/2/160300
+Prov. Kalimantan Timur,160000,Kab. Penajam Paser Utara,161100,https://dapo.kemendikdasmen.go.id/sp/2/161100
+Prov. Kalimantan Timur,160000,Kota Bontang,166300,https://dapo.kemendikdasmen.go.id/sp/2/166300
+Prov. Kalimantan Timur,160000,Kab. Mahakam Ulu,161200,https://dapo.kemendikdasmen.go.id/sp/2/161200
+Prov. Kalimantan Utara,340000,Kab. Nunukan,340500,https://dapo.kemendikdasmen.go.id/sp/2/340500
+Prov. Kalimantan Utara,340000,Kab. Bulungan,340200,https://dapo.kemendikdasmen.go.id/sp/2/340200
+Prov. Kalimantan Utara,340000,Kab. Malinau,340100,https://dapo.kemendikdasmen.go.id/sp/2/340100
+Prov. Kalimantan Utara,340000,Kota Tarakan,346000,https://dapo.kemendikdasmen.go.id/sp/2/346000
+Prov. Kalimantan Utara,340000,Kab. Tana Tidung,340300,https://dapo.kemendikdasmen.go.id/sp/2/340300
