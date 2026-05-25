@@ -1,4 +1,5 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException, BackgroundTasks
+from fastapi import FastAPI, UploadFile, File, HTTPException, BackgroundTasks, Depends, Security
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.responses import JSONResponse
 import pandas as pd
 import numpy as np
@@ -10,6 +11,7 @@ import uuid
 import shutil
 import subprocess
 import sys
+import os
 import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -69,6 +71,18 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Tracer Study Classification Worker", lifespan=lifespan)
 
+# --- SECURITY SETUP ---
+security = HTTPBearer()
+EXPECTED_TOKEN = os.getenv("FASTAPI_SECRET_KEY", "")
+
+def verify_token(credentials: HTTPAuthorizationCredentials = Security(security)):
+    if not EXPECTED_TOKEN:
+        return credentials.credentials
+    if credentials.credentials != EXPECTED_TOKEN:
+        raise HTTPException(status_code=401, detail="Unauthorized - Invalid Token")
+    return credentials.credentials
+# ----------------------
+
 def clean_text(text: str) -> str:
     if pd.isna(text) or not isinstance(text, str):
         return ""
@@ -102,7 +116,7 @@ def safe_get(row: pd.Series, df_columns: list, code: str, default: str = "") -> 
 def classify_rule(job_text: str) -> dict:
     clean = clean_text(job_text)
     if not clean or len(clean) < 3:
-        return {"profile": "Non-IT", "confidence": 0.65, "method": "rule_based_fallback"}
+        return {"profile": "Tidak Diketahui", "confidence": 0.65, "method": "rule_based_fallback"}
     
     for profile, keywords in KEYWORD_RULES.items():
         if any(kw in clean for kw in keywords):
@@ -112,7 +126,7 @@ def classify_rule(job_text: str) -> dict:
 def classify_ml(job_text: str, pipeline) -> dict:
     clean = clean_text(job_text)
     if not clean:
-        return {"profile": "Non-IT", "confidence": 0.0, "method": "ml_empty_input"}
+        return {"profile": "Tidak Diketahui", "confidence": 0.0, "method": "ml_empty_input"}
     try:
         proba = pipeline.predict_proba([clean])[0]
         max_conf = float(np.max(proba))
@@ -163,7 +177,7 @@ def health_check():
 
 
 # RE-TRAINING ENDPOINTS
-@app.post("/api/v1/retrain")
+@app.post("/api/v1/retrain", dependencies=[Depends(verify_token)])
 async def trigger_retrain(file: UploadFile = File(None)):
     if STATUS_PATH.exists():
         try:
@@ -214,7 +228,7 @@ async def trigger_retrain(file: UploadFile = File(None)):
     return JSONResponse(content={"status": "started", "message": "Re-training dimulai di background."})
 
 
-@app.get("/api/v1/retrain/status")
+@app.get("/api/v1/retrain/status", dependencies=[Depends(verify_token)])
 def retrain_status():
     if not STATUS_PATH.exists():
         return JSONResponse(content={"stage": "idle", "message": "Belum ada proses re-training."})
@@ -237,7 +251,7 @@ def retrain_status():
     return JSONResponse(content=data)
 
 
-@app.post("/api/v1/retrain/reload")
+@app.post("/api/v1/retrain/reload", dependencies=[Depends(verify_token)])
 def reload_model():
     try:
         app.state.pipeline = joblib.load(PIPELINE_PATH)
@@ -246,7 +260,7 @@ def reload_model():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Gagal reload model: {str(e)}")
 
-@app.post("/api/v1/classify")
+@app.post("/api/v1/classify", dependencies=[Depends(verify_token)])
 async def classify_tracer(file: UploadFile = File(...)):
     if not file.filename:
         raise HTTPException(status_code=400, detail="No file provided")
@@ -348,7 +362,7 @@ async def classify_tracer(file: UploadFile = File(...)):
                 
                 rule_res = classify_rule(job_text)
                 res = rule_res or (classify_ml(job_text, pipeline) if pipeline else {"profile": "Non-IT", "confidence": 0.0, "method": "ml_unavailable"})
-                status = "auto_classified" if res["method"] in ["rule_based", "ml_fallback"] else "needs_review"
+                status = "auto_classified" if res["method"] in ["rule_based", "ml_fallback"] or res["profile"] == "Tidak Diketahui" else "needs_review"
                 
                 raw_data_payload = {str(k): safe_str(v) for k, v in row.to_dict().items()}
                 

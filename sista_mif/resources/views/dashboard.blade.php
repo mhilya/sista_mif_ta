@@ -421,6 +421,7 @@
                                     @php
                                         $colorClass = match($row->predicted_profile) {
                                             'Programmer' => 'bg-emerald-100 text-emerald-700 border-emerald-200',
+                                            'Tidak Diketahui' => 'bg-slate-100 text-slate-500 border-slate-200',
                                             'Non-IT' => 'bg-slate-100 text-slate-700 border-slate-200',
                                             default => 'bg-blue-100 text-blue-700 border-blue-200',
                                         };
@@ -459,6 +460,57 @@
                                         @method('DELETE')
                                         <button type="submit" class="text-rose-600 hover:text-rose-900 transition-colors">Hapus</button>
                                     </form>
+                                    <div x-data="{ openDetail: false }" class="inline-block text-left ml-2">
+                                        <button @click="openDetail = true" class="text-purple-600 hover:text-purple-900 transition-colors">Detail</button>
+                                        
+                                        <!-- Modal Detail -->
+                                        <div x-show="openDetail" style="display: none;" class="fixed inset-0 z-[70] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                                            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                                                <div x-show="openDetail" @click="openDetail = false" x-transition.opacity class="fixed inset-0 bg-slate-900 bg-opacity-50 transition-opacity" aria-hidden="true"></div>
+                                                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                                                <div x-show="openDetail" x-transition class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl w-full">
+                                                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 border-b border-slate-100">
+                                                        <div class="flex justify-between items-center mb-4">
+                                                            <h3 class="text-lg leading-6 font-bold text-slate-800" id="modal-title">
+                                                                Detail Data Internal - {{ $row->nama }}
+                                                            </h3>
+                                                            <button @click="openDetail = false" class="text-slate-400 hover:text-slate-600 focus:outline-none">
+                                                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                                            </button>
+                                                        </div>
+                                                        <div class="max-h-[60vh] overflow-y-auto">
+                                                            <table class="min-w-full divide-y divide-slate-200">
+                                                                <tbody class="bg-white divide-y divide-slate-100">
+                                                                    @php
+                                                                        $raw = \App\Models\InternalRawData::where('nim', $row->nim)->first();
+                                                                    @endphp
+                                                                    @if($raw)
+                                                                        @foreach($raw->getAttributes() as $key => $val)
+                                                                            @if(!in_array($key, ['id', 'created_at', 'updated_at']) && $val !== null && $val !== '')
+                                                                            <tr>
+                                                                                <td class="px-4 py-3 text-sm font-medium text-slate-700 w-1/3 capitalize whitespace-normal">{{ str_replace('_', ' ', $key) }}</td>
+                                                                                <td class="px-4 py-3 text-sm text-slate-600 w-2/3 whitespace-normal">{{ $val }}</td>
+                                                                            </tr>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @else
+                                                                        <tr>
+                                                                            <td colspan="2" class="px-4 py-3 text-sm text-slate-500 text-center">Data detail tidak tersedia.</td>
+                                                                        </tr>
+                                                                    @endif
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="bg-slate-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-slate-100">
+                                                        <button type="button" @click="openDetail = false" class="mt-3 w-full inline-flex justify-center rounded-xl border border-slate-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                                            Tutup
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             @empty
@@ -508,6 +560,7 @@
                                                 <option value="Data Analyst">Data Analyst</option>
                                                 <option value="Wirausaha Informatika">Wirausaha Informatika</option>
                                                 <option value="Non-IT">Non-IT</option>
+                                                <option value="Tidak Diketahui">Tidak Diketahui</option>
                                             </select>
                                             <p class="mt-2 text-xs text-slate-400">Status akan otomatis berubah menjadi <span class="font-semibold text-blue-600">Manual</span> setelah diperbarui.</p>
                                         </div>

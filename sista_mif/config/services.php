@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'fastapi' => [
+        'worker_url' => env('FASTAPI_WORKER_URL', 'http://127.0.0.1:8001'),
+        'secret_key' => env('FASTAPI_SECRET_KEY'),
+        'timeout' => env('FASTAPI_TIMEOUT', 120),
+    ],
+
 ];

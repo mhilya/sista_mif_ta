@@ -1,22 +1,30 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ClassificationController;
+use App\Http\Controllers\InternalDataController;
+use App\Http\Controllers\KemendikDataController;
+use App\Http\Controllers\ClassificationTaskController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () { return view('auth.login'); });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [ClassificationController::class, 'dashboard'])->name('dashboard');
-    Route::get('/kemendik', [ClassificationController::class, 'kemendik'])->name('kemendik');
-    Route::post('/upload', [ClassificationController::class, 'upload'])->name('upload.process');
-    Route::put('/internal/{id}', [ClassificationController::class, 'update'])->name('internal.update');
-    Route::delete('/internal/{id}', [ClassificationController::class, 'destroy'])->name('internal.destroy');
-    Route::post('/internal/bulk-delete', [ClassificationController::class, 'bulkDestroy'])->name('internal.bulk_destroy');
-    Route::post('/internal/bulk-update', [ClassificationController::class, 'bulkUpdate'])->name('internal.bulk_update');
-    Route::get('/internal/download-pdf', [ClassificationController::class, 'downloadPdf'])->name('internal.download_pdf');
-    Route::post('/retrain', [ClassificationController::class, 'retrain'])->name('retrain.trigger');
-    Route::get('/retrain/status', [ClassificationController::class, 'retrainStatus'])->name('retrain.status');
+    Route::get('/dashboard', [InternalDataController::class, 'index'])->name('dashboard');
+    Route::get('/kemendik', [KemendikDataController::class, 'index'])->name('kemendik');
+    
+    // Import Data
+    Route::post('/upload', [ClassificationTaskController::class, 'upload'])->name('upload.process');
+    
+    // Internal Data Management
+    Route::put('/internal/{id}', [InternalDataController::class, 'update'])->name('internal.update');
+    Route::delete('/internal/{id}', [InternalDataController::class, 'destroy'])->name('internal.destroy');
+    Route::post('/internal/bulk-delete', [InternalDataController::class, 'bulkDestroy'])->name('internal.bulk_destroy');
+    Route::post('/internal/bulk-update', [InternalDataController::class, 'bulkUpdate'])->name('internal.bulk_update');
+    Route::get('/internal/download-pdf', [InternalDataController::class, 'exportPdf'])->name('internal.download_pdf');
+    
+    // ML Task
+    Route::post('/retrain', [ClassificationTaskController::class, 'retrain'])->name('retrain.trigger');
+    Route::get('/retrain/status', [ClassificationTaskController::class, 'retrainStatus'])->name('retrain.status');
 
 
     Route::prefix('profile')->group(function () {

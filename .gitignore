@@ -1,0 +1,38 @@
+# Python / FastAPI Core
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Python Environments
+.venv/
+.env/
+env/
+venv/
+ENV/
+env.bak/
+
+# Python Testing, Logs, & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+fastapi/ml_assets/tmp/
+
+# Environments & Secrets (Global & FastAPI)
+.env
+.env.*
+!.env.example
+
+# OS & Editor / IDE (Untuk level Root)
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.bak
+
+# Model / Data (Jika di-generate/download lokal)
+fastapi/ml_assets/*.pkl
+fastapi/ml_assets/*.h5
+fastapi/ml_assets/*.pt

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('tahun_lulus')->nullable();
             $table->text('job_text_raw');
             $table->enum('source_type', ['internal_mif', 'kemendik'])->default('internal_mif');
-            $table->enum('predicted_profile', ['Programmer', 'Data Analyst', 'Wirausaha Informatika', 'Non-IT'])->nullable();
+            $table->string('predicted_profile')->nullable();
             $table->decimal('confidence_score', 5, 4)->nullable();
             $table->string('classification_method')->nullable();
             $table->enum('status', ['auto_classified', 'needs_review', 'manual_override', 'failed'])->default('needs_review');
