@@ -4,6 +4,10 @@ import re
 import sys
 from pathlib import Path
 from sklearn.model_selection import train_test_split
+from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
+
+factory = StemmerFactory()
+stemmer = factory.create_stemmer()
 
 BASE_DIR = Path(__file__).parent
 DATA_DIR = BASE_DIR
@@ -57,13 +61,20 @@ def clean_text(text: str) -> str:
     text = re.sub(r'[^\w\s]', '', text)
     text = re.sub(r'\d+', '', text)
     tokens = [w for w in text.split() if w not in COMPANY_STOPWORDS and len(w) >= 3]
-    return " ".join(tokens)
+    return " ".join([stemmer.stem(w) for w in tokens])
 
+# [FIX v4] Logika lebih ketat: hanya flag jika token teks sepenuhnya subset dari nama
+# (max 3 token) — bukan sekadar rasio overlap 50% seperti v3 yang rawan false positive.
 def is_likely_name(text: str, full_name: str) -> bool:
     if not text or not full_name: return False
-    name_parts = set(str(full_name).lower().split())
-    text_parts = set(text.split())
-    return len(text_parts & name_parts) / max(len(text_parts), 1) > 0.5
+    text_clean = re.sub(r'[^\w\s]', '', text.lower())
+    name_clean = re.sub(r'[^\w\s]', '', str(full_name).lower())
+    text_parts = set(text_clean.split())
+    name_parts = set(name_clean.split())
+    if len(text_parts) == 0: return False
+    if len(text_parts) <= 3 and text_parts.issubset(name_parts):
+        return True
+    return False
 
 def classify_rule_based(text: str) -> str:
     if not text or len(text) < 3: return "Non-IT"
@@ -79,47 +90,76 @@ def main():
     df.columns = df.columns.str.strip()
     col_nim = find_col(df, ["nim"])
     col_nama = find_col(df, ["nama", "lengkap"])
-    col_jabatan = find_col(df, ["jabatan"])
+    col_jab_lama = find_col(df, ["jabatan"])
+    col_jab_baru = find_col(df, ["jabatan_terupdate"])
     col_klasifikasi = find_col(df, ["klasifikasi"])
     col_status = find_col(df, ["status", "kerja"])
-    if not all([col_nim, col_nama, col_jabatan]):
+
+    if not all([col_nim, col_nama, col_jab_lama]):
         print(" Kolom esensial tidak ditemukan"); print(df.columns.tolist()[:10]); sys.exit(1)
+
+    if col_jab_baru:
+        mask_empty = df[col_jab_baru].isna() | df[col_jab_baru].astype(str).str.strip().str.lower().isin(["", "-", "0", "nan", "none", "null", "tidak diisi", "tidak diketahui"])
+        df["jabatan_final"] = df[col_jab_baru].where(~mask_empty, df[col_jab_lama])
+    else:
+        df["jabatan_final"] = df[col_jab_lama]
+
+    col_jabatan = "jabatan_final"
     if col_status:
         blacklist = ["tidah diketahui", "tidak bekerja", "pelajar", "melanjutkan pendidikan", "nan", ""]
         mask = ~df[col_status].str.lower().str.strip().isin(blacklist)
         df = df[mask].copy()
+
+    # Stemming berat terjadi HANYA di sini — satu kali saat corpus preparation
     df["job_text_raw"] = df[col_jabatan].apply(clean_text)
+
     if col_klasifikasi:
         fallback_map = {"Programmer": "programmer developer", "Data Analyst": "data analyst", "Wirausaha IT": "wirausaha founder", "Wirausaha": "wirausaha founder", "Non IT": "staff admin", "Infokom": "it staff teknisi", "TIdah diketahui": "", "Pelajar": "", "Tidak Bekerja": ""}
         empty_mask = df["job_text_raw"] == ""
         if empty_mask.any(): df.loc[empty_mask, "job_text_raw"] = df.loc[empty_mask, col_klasifikasi].map(fallback_map).fillna("")
+
     if col_nama:
         name_leak_mask = df.apply(lambda row: is_likely_name(row["job_text_raw"], row[col_nama]), axis=1)
         leaked_count = name_leak_mask.sum()
         if leaked_count > 0: print(f" Mengabaikan {leaked_count} baris yang terindikasi mengandung nama pribadi.")
         df = df[~name_leak_mask].copy()
+
     if col_klasifikasi:
         df["label"] = df[col_klasifikasi].str.strip().map(KLASIFIKASI_MAP)
         missing = df["label"].isna()
         if missing.any(): df.loc[missing, "label"] = df.loc[missing, "job_text_raw"].apply(classify_rule_based)
-    else: df["label"] = df["job_text_raw"].apply(classify_rule_based)
+    else:
+        df["label"] = df["job_text_raw"].apply(classify_rule_based)
+
     df = df[df["job_text_raw"].str.len() >= 3].copy()
-    result = df[[col_nim, col_jabatan, "job_text_raw", "label"]].rename(columns={col_nim: "nim"}).dropna(subset=["nim", "label"]).drop_duplicates(subset=["nim"], keep="first")
+    result = (
+        df[[col_nim, col_jabatan, "job_text_raw", "label"]]
+        .rename(columns={col_nim: "nim"})
+        .dropna(subset=["nim", "label"])
+        .drop_duplicates(subset=["nim"], keep="first")
+    )
     print(f"Memuat {len(result)} data valid (berdasarkan teks pekerjaan)\n")
+
     min_count = result["label"].value_counts().min()
-    if min_count < 2: train_df, test_df = train_test_split(result, test_size=0.30, random_state=42)
-    else: train_df, test_df = train_test_split(result, test_size=0.30, stratify=result["label"], random_state=42)
+    if min_count < 2:
+        train_df, test_df = train_test_split(result, test_size=0.30, random_state=42)
+    else:
+        train_df, test_df = train_test_split(result, test_size=0.30, stratify=result["label"], random_state=42)
+
     cols_out = ["nim", "job_text_raw", "label"]
-    train_df[cols_out].to_csv(OUTPUT_DIR / "training_corpus_3.csv", index=False, sep=";", encoding=ENCODING)
-    test_df[cols_out].to_csv(OUTPUT_DIR / "test_set_3.csv", index=False, sep=";", encoding=ENCODING)
+    train_df[cols_out].to_csv(OUTPUT_DIR / "training_corpus.csv", index=False, sep=";", encoding=ENCODING)
+    test_df[cols_out].to_csv(OUTPUT_DIR / "test_set.csv", index=False, sep=";", encoding=ENCODING)
+
     print("DATA PELATIHAN (TRAINING SET):")
     print(train_df["label"].value_counts().to_string())
+
+    # [KEEP v3] Distribusi per kelas di test set — berguna untuk deteksi class imbalance
     print("\nDATA PENGUJIAN (TEST SET):")
     for cls in TARGET_CLASSES:
         c = test_df["label"].value_counts().get(cls, 0)
-        print(f"  {cls:25} : {c}{'<5' if c<5 else ''}")
+        print(f"  {cls:25} : {c}{'<5' if c < 5 else ''}")
+
     print(f"\nData berhasil disimpan ke {OUTPUT_DIR}")
 
 if __name__ == "__main__":
     main()
-

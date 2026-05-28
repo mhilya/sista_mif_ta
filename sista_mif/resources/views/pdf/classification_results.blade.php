@@ -48,7 +48,7 @@
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $row->nim }}</td>
-                <td>{{ $row->nama }}</td>
+                <td>{{ $row->internalRaw->nama_lengkap ?? '-' }}</td>
                 <td>{{ $row->job_text_raw }}</td>
                 <td>
                     {{ $row->predicted_profile ?? '-' }}

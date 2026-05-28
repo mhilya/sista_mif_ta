@@ -21,10 +21,24 @@ class InternalDataController extends Controller
 
         $query->orderByRaw("FIELD(status, 'needs_review', 'manual_override', 'auto_classified', 'failed')");
 
+        if ($request->filled('search')) {
+            $query->where(function($q) use ($request) {
+                $q->where('job_text_raw', 'LIKE', '%' . $request->search . '%')
+                  ->orWhere('nim', 'LIKE', '%' . $request->search . '%')
+                  ->orWhereHas('internalRaw', function($q) use ($request) {
+                      $q->where('nama_lengkap', 'LIKE', '%' . $request->search . '%');
+                  });
+            });
+        }
+
         if ($request->has('sort')) {
-            $allowedSorts = ['nim', 'nama', 'job_text_raw', 'predicted_profile', 'status'];
-            if (in_array($request->sort, $allowedSorts)) {
-                $query->orderBy($request->sort, $request->direction === 'desc' ? 'desc' : 'asc');
+            $allowedSorts = ['nim', 'job_text_raw', 'predicted_profile', 'status'];
+            if ($request->sort === 'nama') {
+                $query->join('internal_raw_data', 'classification_results.nim', '=', 'internal_raw_data.nim')
+                      ->orderBy('internal_raw_data.nama_lengkap', $request->direction === 'desc' ? 'desc' : 'asc')
+                      ->select('classification_results.*');
+            } elseif (in_array($request->sort, $allowedSorts)) {
+                $query->orderBy('classification_results.'.$request->sort, $request->direction === 'desc' ? 'desc' : 'asc');
             }
         } else {
             $query->latest();
@@ -119,7 +133,7 @@ class InternalDataController extends Controller
             'status' => 'manual_override'
         ]);
 
-        return back()->with('success', 'Data berhasil diperbarui!');
+        return redirect(url()->previous() . '#tabel-data')->with('success', 'Data berhasil diperbarui!');
     }
 
     public function destroy($id)
@@ -127,7 +141,7 @@ class InternalDataController extends Controller
         $record = ClassificationResult::findOrFail($id);
         $record->delete();
 
-        return back()->with('success', 'Data berhasil dihapus!');
+        return redirect(url()->previous() . '#tabel-data')->with('success', 'Data berhasil dihapus!');
     }
 
     public function bulkDestroy(Request $request)
@@ -139,7 +153,7 @@ class InternalDataController extends Controller
 
         ClassificationResult::whereIn('id', $request->ids)->delete();
 
-        return back()->with('success', count($request->ids) . ' data berhasil dihapus!');
+        return redirect(url()->previous() . '#tabel-data')->with('success', count($request->ids) . ' data berhasil dihapus!');
     }
 
     public function bulkUpdate(Request $request)
@@ -155,7 +169,7 @@ class InternalDataController extends Controller
             'status' => 'manual_override'
         ]);
 
-        return back()->with('success', count($request->ids) . ' data berhasil diubah profilnya!');
+        return redirect(url()->previous() . '#tabel-data')->with('success', count($request->ids) . ' data berhasil diubah profilnya!');
     }
 
     public function exportPdf(Request $request)
@@ -164,9 +178,13 @@ class InternalDataController extends Controller
         $query->orderByRaw("FIELD(status, 'needs_review', 'manual_override', 'auto_classified', 'failed')");
 
         if ($request->has('sort')) {
-            $allowedSorts = ['nim', 'nama', 'job_text_raw', 'predicted_profile', 'status'];
-            if (in_array($request->sort, $allowedSorts)) {
-                $query->orderBy($request->sort, $request->direction === 'desc' ? 'desc' : 'asc');
+            $allowedSorts = ['nim', 'job_text_raw', 'predicted_profile', 'status'];
+            if ($request->sort === 'nama') {
+                $query->join('internal_raw_data', 'classification_results.nim', '=', 'internal_raw_data.nim')
+                      ->orderBy('internal_raw_data.nama_lengkap', $request->direction === 'desc' ? 'desc' : 'asc')
+                      ->select('classification_results.*');
+            } elseif (in_array($request->sort, $allowedSorts)) {
+                $query->orderBy('classification_results.'.$request->sort, $request->direction === 'desc' ? 'desc' : 'asc');
             }
         } else {
             $query->latest();

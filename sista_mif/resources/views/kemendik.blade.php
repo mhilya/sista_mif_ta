@@ -29,20 +29,9 @@
                     <p class="text-sm text-slate-500 mt-1">Unggah file Excel/CSV data Kemendik untuk agregasi dan mapping (tanpa proses NLP klasifikasi).</p>
                 </div>
 
-                @if(session('success')) 
-                <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl mb-6 flex items-center space-x-3">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                    <span>{{ session('success') }}</span>
-                </div> 
-                @endif
-                @if(session('error'))   
-                <div class="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-xl mb-6 flex items-center space-x-3">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
-                    <span>{{ session('error') }}</span>
-                </div> 
-                @endif
+
                 
-                <form action="{{ route('upload.process') }}" method="POST" enctype="multipart/form-data" class="flex flex-col md:flex-row gap-6 items-end">
+                <form id="uploadForm" action="{{ route('upload.process') }}" method="POST" enctype="multipart/form-data" class="flex flex-col md:flex-row gap-6 items-end">
                     @csrf
                     <input type="hidden" name="source_type" value="kemendik">
                     
@@ -121,7 +110,7 @@
             @endif
 
             <!-- Data Table -->
-            <div class="bg-white rounded-2xl shadow-xl shadow-purple-100/50 border border-purple-50 overflow-hidden">
+            <div id="tabel-data" class="bg-white rounded-2xl shadow-xl shadow-purple-100/50 border border-purple-50 overflow-hidden">
                 <div class="px-6 py-5 border-b border-purple-50 bg-purple-50/20 flex justify-between items-center">
                     <h3 class="text-lg font-bold text-slate-800">Tabel Data Kemendiktisaintek</h3>
                 </div>
@@ -324,4 +313,113 @@
         });
     </script>
     @endif
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tableContainer = document.getElementById('tabel-data');
+            if (tableContainer) {
+                tableContainer.addEventListener('click', e => {
+                    const link = e.target.closest('nav[role="navigation"] a');
+                    if (link && link.href && !link.closest('thead')) {
+                        e.preventDefault();
+                        const url = link.href;
+                        
+                        tableContainer.classList.add('opacity-50', 'pointer-events-none', 'transition-opacity');
+                        
+                        fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                            .then(res => res.text())
+                            .then(html => {
+                                const doc = new DOMParser().parseFromString(html, 'text/html');
+                                const newTable = doc.getElementById('tabel-data');
+                                if (newTable) {
+                                    tableContainer.innerHTML = newTable.innerHTML;
+                                    window.history.pushState({ path: url }, '', url);
+                                }
+                            })
+                            .catch(err => console.error('Gagal memuat halaman tabel:', err))
+                            .finally(() => tableContainer.classList.remove('opacity-50', 'pointer-events-none'));
+                    }
+                });
+                window.addEventListener('popstate', () => window.location.reload());
+            }
+
+            // AJAX Upload & Polling
+            const uploadForm = document.getElementById('uploadForm');
+            if (uploadForm) {
+                uploadForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const formData = new FormData(this);
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.innerHTML;
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<svg class="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Mengirim...';
+
+                    try {
+                        const response = await fetch(this.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: { 'Accept': 'application/json' }
+                        });
+                        const result = await response.json();
+                        
+                        if (!result.success) {
+                            Swal.fire('Error', result.message, 'error');
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = originalBtnText;
+                            return;
+                        }
+
+                        Swal.fire({
+                            title: 'Memproses Data...',
+                            html: result.message || 'Mohon tunggu, sistem sedang memproses file Anda.',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        pollStatus(result.job_id, submitBtn, originalBtnText);
+
+                    } catch (err) {
+                        Swal.fire('Error', 'Gagal mengirim file.', 'error');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnText;
+                    }
+                });
+            }
+
+            function pollStatus(jobId, submitBtn, originalBtnText) {
+                const interval = setInterval(async () => {
+                    try {
+                        const res = await fetch(`/upload/status/${jobId}`);
+                        const data = await res.json();
+                        
+                        if (data.status === 'completed') {
+                            clearInterval(interval);
+                            Swal.fire('Selesai!', data.message, 'success').then(() => {
+                                window.location.reload();
+                            });
+                        } else if (data.status === 'error') {
+                            clearInterval(interval);
+                            Swal.fire('Gagal', data.message, 'error');
+                            if(submitBtn) {
+                                submitBtn.disabled = false;
+                                submitBtn.innerHTML = originalBtnText;
+                            }
+                        } else {
+                            if (data.message) {
+                                Swal.getHtmlContainer().textContent = data.message;
+                            }
+                        }
+                    } catch (err) {
+                        clearInterval(interval);
+                        Swal.fire('Error', 'Koneksi ke server terputus saat mengecek status.', 'error');
+                        if(submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = originalBtnText;
+                        }
+                    }
+                }, 3000);
+            }
+        });
+    </script>
 </x-app-layout>

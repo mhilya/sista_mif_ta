@@ -10,5 +10,15 @@ class ClassificationResult extends Model
     protected $casts = ['confidence_score' => 'float'];
     public function scopeInternal($q) { return $q->where('source_type', 'internal_mif'); }
     public function scopeNeedsReview($q) { return $q->where('status', 'needs_review'); }
+
+    public function internalRaw()
+    {
+        return $this->belongsTo(InternalRawData::class, 'nim', 'nim');
+    }
+
+    public function kemendikRaw()
+    {
+        return $this->belongsTo(KemendikRawData::class, 'nim', 'nimhsmsmh');
+    }
 }
 

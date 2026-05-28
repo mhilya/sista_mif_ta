@@ -103,20 +103,9 @@
                     <p class="text-sm text-slate-500 mt-1">Unggah file Excel/CSV untuk memproses klasifikasi otomatis menggunakan Machine Learning.</p>
                 </div>
 
-                @if(session('success')) 
-                <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl mb-6 flex items-center space-x-3">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                    <span>{{ session('success') }}</span>
-                </div> 
-                @endif
-                @if(session('error'))   
-                <div class="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-xl mb-6 flex items-center space-x-3">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
-                    <span>{{ session('error') }}</span>
-                </div> 
-                @endif
+
                 
-                <form action="{{ route('upload.process') }}" method="POST" enctype="multipart/form-data" class="flex flex-col md:flex-row gap-6 items-end">
+                <form id="uploadForm" action="{{ route('upload.process') }}" method="POST" enctype="multipart/form-data" class="flex flex-col md:flex-row gap-6 items-end">
                     @csrf
                     <input type="hidden" name="source_type" value="internal_mif">
                     
@@ -339,13 +328,24 @@
             </div>
 
             <!-- Data Table -->
-            <div class="bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+            <div id="tabel-data" class="bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
                 <div class="px-6 py-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
                     <h3 class="text-lg font-bold text-slate-800">Tabel Hasil Klasifikasi</h3>
-                    <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-3 w-full md:w-auto mt-4 md:mt-0">
+                        <form action="{{ route('dashboard') }}" method="GET" class="relative flex items-center">
+                            @if(request('sort')) <input type="hidden" name="sort" value="{{ request('sort') }}"> @endif
+                            @if(request('direction')) <input type="hidden" name="direction" value="{{ request('direction') }}"> @endif
+                            
+                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari job / nim / nama..." class="rounded-l-lg border-slate-300 text-sm focus:ring-blue-500 focus:border-blue-500 pl-4 py-2 w-full md:w-56 lg:w-64">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r-lg text-sm font-semibold border border-blue-600 transition-colors">Cari</button>
+                            
+                            @if(request('search'))
+                                <a href="{{ route('dashboard', request()->except('search', 'page')) }}" class="ml-2 text-rose-500 hover:text-rose-700 text-sm font-medium whitespace-nowrap">Reset</a>
+                            @endif
+                        </form>
                         <a href="{{ route('internal.download_pdf', request()->query()) }}" class="inline-flex items-center px-4 py-2 bg-emerald-600 text-white text-sm font-semibold rounded-lg hover:bg-emerald-700 transition-colors shadow-sm">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            Download PDF
+                            PDF
                         </a>
                         <div x-show="selectedIds.length > 0" style="display: none;" class="flex items-center space-x-2">
                             <span class="text-sm text-slate-600 font-medium mr-2"><span x-text="selectedIds.length"></span> dipilih</span>
@@ -355,7 +355,7 @@
                             Edit
                         </button>
 
-                        <form action="{{ route('internal.bulk_destroy') }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data yang dipilih?');" class="inline-block">
+                        <form action="{{ route('internal.bulk_destroy') }}" method="POST" class="inline-block bulk-delete-form">
                             @csrf
                             <template x-for="id in selectedIds" :key="id">
                                 <input type="hidden" name="ids[]" :value="id">
@@ -410,7 +410,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-semibold text-slate-800">{{ $row->nim }}</div>
-                                    <div class="text-sm text-slate-500">{{ $row->nama }}</div>
+                                    <div class="text-sm text-slate-500">{{ $row->internalRaw->nama_lengkap ?? '-' }}</div>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-slate-600 max-w-xs">
                                     <div class="line-clamp-2" title="{{ $row->job_text_raw }}">
@@ -454,8 +454,8 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                                    <button @click="openEdit({{ $row->id }}, '{{ $row->predicted_profile }}', '{{ addslashes($row->nama) }}')" class="text-blue-600 hover:text-blue-900 transition-colors">Edit</button>
-                                    <form action="{{ route('internal.destroy', $row->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
+                                    <button @click="openEdit({{ $row->id }}, '{{ $row->predicted_profile }}', '{{ addslashes($row->internalRaw->nama_lengkap ?? '-') }}')" class="text-blue-600 hover:text-blue-900 transition-colors">Edit</button>
+                                    <form action="{{ route('internal.destroy', $row->id) }}" method="POST" class="inline-block delete-form">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-rose-600 hover:text-rose-900 transition-colors">Hapus</button>
@@ -472,7 +472,7 @@
                                                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 border-b border-slate-100">
                                                         <div class="flex justify-between items-center mb-4">
                                                             <h3 class="text-lg leading-6 font-bold text-slate-800" id="modal-title">
-                                                                Detail Data Internal - {{ $row->nama }}
+                                                                Detail Data Internal - {{ $row->internalRaw->nama_lengkap ?? '-' }}
                                                             </h3>
                                                             <button @click="openDetail = false" class="text-slate-400 hover:text-slate-600 focus:outline-none">
                                                                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -849,5 +849,151 @@
             },
         };
     }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tableContainer = document.getElementById('tabel-data');
+            if (tableContainer) {
+                tableContainer.addEventListener('click', e => {
+                    const link = e.target.closest('nav[role="navigation"] a');
+                    if (link && link.href && !link.closest('thead')) {
+                        e.preventDefault();
+                        const url = link.href;
+                        
+                        tableContainer.classList.add('opacity-50', 'pointer-events-none', 'transition-opacity');
+                        
+                        fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                            .then(res => res.text())
+                            .then(html => {
+                                const doc = new DOMParser().parseFromString(html, 'text/html');
+                                const newTable = doc.getElementById('tabel-data');
+                                if (newTable) {
+                                    tableContainer.innerHTML = newTable.innerHTML;
+                                    window.history.pushState({ path: url }, '', url);
+                                }
+                            })
+                            .catch(err => console.error('Gagal memuat halaman tabel:', err))
+                            .finally(() => tableContainer.classList.remove('opacity-50', 'pointer-events-none'));
+                    }
+                });
+                window.addEventListener('popstate', () => window.location.reload());
+            }
+
+            // SweetAlert Confirmations
+            document.querySelectorAll('.delete-form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'Hapus Data?',
+                        text: "Data yang dihapus tidak dapat dikembalikan!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#ef4444',
+                        cancelButtonColor: '#64748b',
+                        confirmButtonText: 'Ya, Hapus!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) form.submit();
+                    });
+                });
+            });
+
+            document.querySelectorAll('.bulk-delete-form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'Hapus Data Massal?',
+                        text: "Semua data yang dipilih akan dihapus permanen!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#ef4444',
+                        cancelButtonColor: '#64748b',
+                        confirmButtonText: 'Ya, Hapus Semua!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) form.submit();
+                    });
+                });
+            });
+
+            // AJAX Upload & Polling
+            const uploadForm = document.getElementById('uploadForm');
+            if (uploadForm) {
+                uploadForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const formData = new FormData(this);
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.innerHTML;
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<svg class="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Mengirim...';
+
+                    try {
+                        const response = await fetch(this.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: { 'Accept': 'application/json' }
+                        });
+                        const result = await response.json();
+                        
+                        if (!result.success) {
+                            Swal.fire('Error', result.message, 'error');
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = originalBtnText;
+                            return;
+                        }
+
+                        Swal.fire({
+                            title: 'Memproses Data...',
+                            html: result.message || 'Mohon tunggu, sistem sedang memproses file Anda.',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        pollStatus(result.job_id, submitBtn, originalBtnText);
+
+                    } catch (err) {
+                        Swal.fire('Error', 'Gagal mengirim file.', 'error');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnText;
+                    }
+                });
+            }
+
+            function pollStatus(jobId, submitBtn, originalBtnText) {
+                const interval = setInterval(async () => {
+                    try {
+                        const res = await fetch(`/upload/status/${jobId}`);
+                        const data = await res.json();
+                        
+                        if (data.status === 'completed') {
+                            clearInterval(interval);
+                            Swal.fire('Selesai!', data.message, 'success').then(() => {
+                                window.location.reload();
+                            });
+                        } else if (data.status === 'error') {
+                            clearInterval(interval);
+                            Swal.fire('Gagal', data.message, 'error');
+                            if(submitBtn) {
+                                submitBtn.disabled = false;
+                                submitBtn.innerHTML = originalBtnText;
+                            }
+                        } else {
+                            if (data.message) {
+                                Swal.getHtmlContainer().textContent = data.message;
+                            }
+                        }
+                    } catch (err) {
+                        clearInterval(interval);
+                        Swal.fire('Error', 'Koneksi ke server terputus saat mengecek status.', 'error');
+                        if(submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = originalBtnText;
+                        }
+                    }
+                }, 3000);
+            }
+        });
     </script>
 </x-app-layout>

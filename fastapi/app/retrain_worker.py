@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 """
-TRACER STUDY - RE-TRAINING WORKER (SUBPROCESS)
-Dipanggil oleh FastAPI sebagai background subprocess.
+TRACER STUDY - RE-TRAINING WORKER FINAL (SUBPROCESS)
+Dipanggil oleh FastAPI (main3.py) sebagai background subprocess.
+
 Alur:
   1. Backup pkl lama → pkl.bak
-  2. Merge corpus asli + data manual_override baru
-  3. Train model baru (candidate)
-  4. Evaluasi: bandingkan weighted F1-score baru vs lama
-  5. Promote jika lebih baik; rollback jika tidak
-  6. Update retrain_status.json di setiap tahap
+  2. Merge corpus + manual_override (TANPA drop_duplicates)
+     Override diberi sample_weight lebih tinggi, bukan menghapus data historis.
+  3. Dynamic train/test split dari data gabungan (selalu fresh)
+  4. Evaluasi MODEL LAMA pada test set yang sama (fair comparison)
+  5. K-Fold + train model final (candidate) dengan sample_weight
+  6. Evaluasi candidate pada test set yang sama → delta terhadap old model
+  7. Promote jika lebih baik; rollback jika tidak
+  8. Setiap write status dilindungi FileLock (atomic)
 """
 
 import sys
@@ -17,12 +21,13 @@ import shutil
 import logging
 import warnings
 import re
-import os
+import math
 import pandas as pd
 import numpy as np
 import joblib
 from pathlib import Path
 from datetime import datetime
+from filelock import FileLock
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
@@ -37,23 +42,58 @@ warnings.filterwarnings("ignore")
 # KONFIGURASI
 # ──────────────────────────────────────────────────────────────
 BASE_DIR = Path(__file__).parent.parent
-ML_DIR = BASE_DIR / "ml_assets"
+ML_DIR   = BASE_DIR / "ml_assets"
 DATA_DIR = BASE_DIR.parent / "data" / "processed"
 
-PIPELINE_PATH      = ML_DIR / "ml_pipeline_internal.pkl"
-PIPELINE_BAK_PATH  = ML_DIR / "ml_pipeline_internal.pkl.bak"
-CANDIDATE_PATH     = ML_DIR / "ml_pipeline_candidate.pkl"
-METRICS_PATH       = ML_DIR / "metrics_internal_only.json"
-STATUS_PATH        = ML_DIR / "retrain_status.json"
-CORPUS_PATH        = DATA_DIR / "training_corpus_3.csv"
-TEST_PATH          = DATA_DIR / "test_set_3.csv"
+PIPELINE_PATH     = ML_DIR / "ml_pipeline_internal.pkl"
+PIPELINE_BAK_PATH = ML_DIR / "ml_pipeline_internal.pkl.bak"
+CANDIDATE_PATH    = ML_DIR / "ml_pipeline_candidate.pkl"
+METRICS_PATH      = ML_DIR / "metrics_internal_only.json"
+STATUS_PATH       = ML_DIR / "retrain_status.json"
+LOCK_PATH         = ML_DIR / "retrain_status.lock"
+CORPUS_PATH       = DATA_DIR / "training_corpus.csv"
+TEST_PATH         = DATA_DIR / "test_set.csv"
 
 TARGET_CLASSES = ["Programmer", "Data Analyst", "Wirausaha Informatika", "Non-IT"]
+MIN_IMPROVEMENT_THRESHOLD = 0.01   # Model baru harus lebih baik minimal +1% weighted F1
+MAX_REGRESSION_ALLOWED    = 0.02   # Toleransi degradasi maksimal 2% sebelum rollback keras
 
-# Threshold: model baru harus lebih baik minimal MIN_IMPROVEMENT dari model lama
-MIN_IMPROVEMENT_THRESHOLD = 0.01   # 1% weighted F1
-MAX_REGRESSION_ALLOWED    = 0.02   # Toleransi: model baru boleh lebih buruk max 2% (di luar ini = rollback keras)
+# ── KONFIGURASI BOBOT OVERRIDE ──────────────────────────────────────────────
+#
+# Masalah yang diselesaikan:
+#   Pada skala besar (N_corpus >> N_override), bobot statis kehilangan daya
+#   akibat dilusi. Formula proporsi murni w = t*N / (M*(1-t)) menyelesaikan
+#   dilusi, tapi menghasilkan w=42.85 pada skenario 10k/100 — yang berisiko
+#   overfitting ekstrem pada noise override.
+#
+# Solusi: Logarithmic damping — tanpa tembok statis.
+#   w_raw = formula proporsi  (jaminan 30% jika tidak di-damp)
+#   w     = MIN + ln(1 + max(0, w_raw - MIN))
+#
+#   Fase linear (w_raw rendah): w ≈ w_raw  → proporsi terpenuhi
+#   Fase log (w_raw tinggi):    w tumbuh tapi melambat → damp alami
+#
+# Implikasi jujur:
+#   Target 30% TIDAK dipertahankan di skala ekstrem. Ini trade-off yang
+#   disengaja: degradasi gradual lebih aman daripada overfitting ke 10
+#   baris override berbobot 42x. Tanpa tembok statis, redaman terjadi
+#   secara natural mengikuti kurva logaritmik, bukan menabrak batas arbitrer.
+#
+# Perilaku nyata (MIN=2.0, TARGET=0.30):
+#   w_raw  │  w_log  │ influence aktual
+#   ──────────────────────────────────
+#    2.00  │  2.000  │ formula <= MIN, pakai floor
+#    4.29  │  3.178  │ (1k corpus, 100 override) → ~24%
+#    8.57  │  3.999  │ (100 korpus, 5 override)  → ~17%
+#   42.86  │  5.723  │ (10k corpus, 100 override)→  ~5.4%
+#  428.60  │  8.063  │ (10k corpus, 10 override) →  ~0.8%
+#
+# Jika angka influence aktual dianggap terlalu kecil → naikkan TARGET.
+# Jika model terlalu sensitif ke override → naikkan MIN agar floor lebih tinggi.
+OVERRIDE_INFLUENCE_TARGET = 0.30  # Titik acuan proporsi (valid di skala normal)
+OVERRIDE_MIN_WEIGHT       = 2.0   # Lantai: override selalu minimal 2× korpus
 
+# [FIX v4] STOPWORDS lengkap — versi retrain_worker2 hanya punya 10 kata (bug terpotong)
 STOPWORDS = {
     "yang", "di", "ke", "dari", "dan", "atau", "dengan", "untuk", "pada", "dalam",
     "adalah", "ini", "itu", "tidak", "juga", "sudah", "akan", "bisa", "ada", "oleh",
@@ -70,6 +110,39 @@ STOPWORDS = {
 stemmer = StemmerFactory().create_stemmer()
 
 # ──────────────────────────────────────────────────────────────
+# DYNAMIC WEIGHT CALCULATOR
+# ──────────────────────────────────────────────────────────────
+def compute_override_weight(n_corpus: int, n_override: int) -> float:
+    """
+    Hitung bobot override dengan logarithmic damping.
+
+    TIDAK ada OVERRIDE_MAX_WEIGHT — tembok statis menghancurkan jaminan
+    pengaruh tepat saat skala besar membutuhkannya. Sebagai gantinya,
+    fungsi ln(1+x) menyediakan redaman alami:
+
+        w_raw = (t * n_corpus) / (n_override * (1 - t))   # proporsi murni
+        w     = MIN + ln(1 + max(0, w_raw - MIN))          # log damping
+
+    Jaminan matematis:
+        - w selalu >= OVERRIDE_MIN_WEIGHT (floor tetap ada)
+        - w tidak pernah meledak ke infinity karena ln tumbuh O(log n)
+        - Tidak ada tembok statis yang membuat influence kolaps tiba-tiba
+
+    Catatan interaksi:
+        LogisticRegression dipanggil dengan class_weight='balanced' DAN
+        sample_weight. Keduanya dikalikan oleh sklearn secara internal.
+        Artinya sampel override dari kelas minoritas mendapat boost ganda.
+        Pantau per-class F1 di metrics JSON untuk mendeteksi efek ini.
+    """
+    if n_override == 0:
+        return 1.0
+    t = OVERRIDE_INFLUENCE_TARGET
+    w_raw = (t * n_corpus) / (n_override * (1.0 - t))
+    # ln damping: linear di zona rendah, melambat secara alami di skala besar
+    w_log = OVERRIDE_MIN_WEIGHT + math.log1p(max(0.0, w_raw - OVERRIDE_MIN_WEIGHT))
+    return round(w_log, 4)
+
+# ──────────────────────────────────────────────────────────────
 # LOGGING
 # ──────────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -79,115 +152,103 @@ logging.basicConfig(
 )
 logger = logging.getLogger("retrain_worker")
 
-
 # ──────────────────────────────────────────────────────────────
-# STATUS WRITER
+# STATUS WRITER — atomic dengan FileLock (v4)
 # ──────────────────────────────────────────────────────────────
 def write_status(stage: str, message: str, extra: dict = None):
-    payload = {
-        "stage": stage,
-        "message": message,
-        "timestamp": datetime.now().isoformat(),
-    }
-    if extra:
-        payload.update(extra)
-    STATUS_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False))
+    lock = FileLock(LOCK_PATH, timeout=10)
+    with lock:
+        payload = {"stage": stage, "message": message, "timestamp": datetime.now().isoformat()}
+        if extra: payload.update(extra)
+        STATUS_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False))
     logger.info(f"[{stage}] {message}")
 
-
 # ──────────────────────────────────────────────────────────────
-# PREPROCESSING — IDENTIK dengan main.py
+# PREPROCESSING — dua fungsi terpisah (v4)
 # ──────────────────────────────────────────────────────────────
-def preprocess_text(text: str) -> str:
-    if pd.isna(text) or not isinstance(text, str):
-        return ""
+def preprocess_stemmed(text: str) -> str:
+    """Untuk data korpus yang SUDAH di-stem oleh prepare_corpus — tidak re-stem."""
+    if pd.isna(text) or not isinstance(text, str): return ""
     text = text.lower().strip()
-    if text in {"nan", "none", "null", "-", "0", "", "tidak diisi"}:
-        return ""
+    if text in {"nan", "none", "null", "-", "0", "", "tidak diisi"}: return ""
+    text = text.replace('-', ' ').replace('/', ' ').replace('_', ' ').replace(',', ' ')
+    text = re.sub(r'[^\w\s]', '', text)
+    text = re.sub(r'\d+', '', text)
+    words = [w for w in text.split() if w not in STOPWORDS and len(w) > 2]
+    return " ".join(words)
+
+def preprocess_raw(text: str) -> str:
+    """Untuk data manual_override yang BELUM di-stem — jalankan Sastrawi."""
+    if pd.isna(text) or not isinstance(text, str): return ""
+    text = text.lower().strip()
+    if text in {"nan", "none", "null", "-", "0", "", "tidak diisi"}: return ""
     text = text.replace('-', ' ').replace('/', ' ').replace('_', ' ').replace(',', ' ')
     text = re.sub(r'[^\w\s]', '', text)
     text = re.sub(r'\d+', '', text)
     words = [w for w in text.split() if w not in STOPWORDS and len(w) > 2]
     return " ".join([stemmer.stem(w) for w in words])
 
-
 # ──────────────────────────────────────────────────────────────
-# EVALUASI MODEL — weighted F1 pada hold-out test
+# EVALUASI MODEL
 # ──────────────────────────────────────────────────────────────
 def evaluate_model(model, X_test: pd.Series, y_test: pd.Series) -> dict:
-    """
-    Evaluasi model pada hold-out test set.
-    Return: dict berisi weighted F1, accuracy, dan per-class metrics.
-    """
     if len(X_test) == 0:
         return {"weighted_f1": 0.0, "accuracy": 0.0, "per_class": {}}
-
     y_pred = model.predict(X_test)
-    report = classification_report(
-        y_test, y_pred,
-        output_dict=True,
-        zero_division=0,
-        labels=TARGET_CLASSES
-    )
+    report = classification_report(y_test, y_pred, output_dict=True, zero_division=0, labels=TARGET_CLASSES)
     return {
         "weighted_f1": round(report.get("weighted avg", {}).get("f1-score", 0.0), 4),
         "accuracy": round(report.get("accuracy", 0.0), 4),
         "per_class": {
             cls: {
                 "precision": round(report.get(cls, {}).get("precision", 0.0), 3),
-                "recall": round(report.get(cls, {}).get("recall", 0.0), 3),
-                "f1": round(report.get(cls, {}).get("f1-score", 0.0), 3),
-                "support": int(report.get(cls, {}).get("support", 0)),
+                "recall":    round(report.get(cls, {}).get("recall", 0.0), 3),
+                "f1":        round(report.get(cls, {}).get("f1-score", 0.0), 3),
+                "support":   int(report.get(cls, {}).get("support", 0)),
             }
             for cls in TARGET_CLASSES
         }
     }
 
+# ──────────────────────────────────────────────────────────────
+# BASELINE F1 — re-evaluasi model lama pada test set yang sama
+# ──────────────────────────────────────────────────────────────
+def get_baseline_f1_on_testset(X_test: pd.Series, y_test: pd.Series) -> float:
+    """
+    Evaluasi model lama (backup) pada X_test/y_test yang SAMA dengan yang
+    akan digunakan mengevaluasi candidate. Ini satu-satunya cara yang adil
+    (apples-to-apples) karena distribusi test set berubah setiap retrain.
 
-# ──────────────────────────────────────────────────────────────
-# AMBIL BASELINE DARI METRICS JSON
-# ──────────────────────────────────────────────────────────────
-def get_baseline_f1() -> float:
+    Membandingkan F1 baru dengan angka JSON lama (dihitung di distribusi berbeda)
+    adalah perbandingan apel vs jeruk — tidak valid untuk keputusan promote/rollback.
     """
-    Baca weighted F1 model lama dari metrics_internal_only.json.
-    Fallback ke 0 jika file tidak ada.
-    """
+    if not PIPELINE_BAK_PATH.exists():
+        logger.warning("Backup .bak tidak ditemukan — baseline F1 diasumsikan 0.0")
+        return 0.0
     try:
-        if METRICS_PATH.exists():
-            m = json.loads(METRICS_PATH.read_text())
-            return float(m.get("hold_out_test", {}).get("weighted avg", {}).get("f1-score", 0.0))
+        old_model = joblib.load(PIPELINE_BAK_PATH)
+        result = evaluate_model(old_model, X_test, y_test)
+        logger.info(f"Baseline F1 (old model, same test set): {result['weighted_f1']:.4f}")
+        return result["weighted_f1"]
     except Exception as e:
-        logger.warning(f"Gagal baca baseline metrics: {e}")
-    return 0.0
-
+        logger.warning(f"Gagal load/evaluasi model lama untuk baseline: {e}")
+        return 0.0
 
 # ──────────────────────────────────────────────────────────────
 # ROLLBACK
 # ──────────────────────────────────────────────────────────────
 def do_rollback(reason: str, old_f1: float, new_f1: float):
-    """Kembalikan pkl aktif ke backup."""
-    # Bersihkan candidate jika ada
-    if CANDIDATE_PATH.exists():
-        CANDIDATE_PATH.unlink()
-
-    # Restore dari backup
+    if CANDIDATE_PATH.exists(): CANDIDATE_PATH.unlink()
     if PIPELINE_BAK_PATH.exists():
         shutil.copy2(PIPELINE_BAK_PATH, PIPELINE_PATH)
-        logger.info(f"Rollback berhasil: pkl lama dipulihkan dari .bak")
+        logger.info("Rollback berhasil: pkl lama dipulihkan dari .bak")
     else:
-        logger.warning("File .bak tidak ditemukan, pkl aktif dibiarkan.")
-
+        logger.warning("File .bak tidak ditemukan — pkl aktif dibiarkan.")
     write_status(
         stage="rolled_back",
         message=f"Model lama dipertahankan. {reason}",
-        extra={
-            "result": "rolled_back",
-            "reason": reason,
-            "old_f1": old_f1,
-            "new_f1": new_f1,
-        }
+        extra={"result": "rolled_back", "reason": reason, "old_f1": old_f1, "new_f1": new_f1}
     )
-
 
 # ──────────────────────────────────────────────────────────────
 # MAIN
@@ -197,15 +258,15 @@ def main(extra_csv_path: str = None):
 
     # ── STEP 1: BACKUP ──────────────────────────────────────
     write_status("backup", "Membuat backup model lama...")
-    if PIPELINE_PATH.exists():
-        shutil.copy2(PIPELINE_PATH, PIPELINE_BAK_PATH)
-        logger.info(f"Backup tersimpan: {PIPELINE_BAK_PATH}")
-    else:
+    if not PIPELINE_PATH.exists():
         write_status("failed", "File pkl aktif tidak ditemukan, tidak bisa backup.")
         sys.exit(1)
+    shutil.copy2(PIPELINE_PATH, PIPELINE_BAK_PATH)
+    logger.info(f"Backup tersimpan: {PIPELINE_BAK_PATH}")
 
-    baseline_f1 = get_baseline_f1()
-    logger.info(f"Baseline weighted F1 (model lama): {baseline_f1:.4f}")
+    # baseline_f1 akan dihitung setelah split dinamis terbentuk
+    # (evaluasi model lama pada test set yang sama dengan candidate)
+    baseline_f1 = 0.0
 
     try:
         # ── STEP 2: LOAD & MERGE DATA ────────────────────────
@@ -215,57 +276,70 @@ def main(extra_csv_path: str = None):
             raise FileNotFoundError(f"Corpus asli tidak ditemukan: {CORPUS_PATH}")
 
         df_corpus = pd.read_csv(CORPUS_PATH, sep=";", dtype=str).dropna(subset=["job_text_raw", "label"])
+        df_corpus["features"] = df_corpus["job_text_raw"].apply(preprocess_stemmed)
+        df_corpus["_weight"] = 1.0   # Bobot normal untuk data historis
         logger.info(f"Corpus asli: {len(df_corpus)} baris")
 
         df_extra = pd.DataFrame()
         if extra_csv_path and Path(extra_csv_path).exists():
             df_extra = pd.read_csv(extra_csv_path, sep=";", dtype=str).dropna(subset=["job_text_raw", "label"])
-            # Validasi label
-            valid_labels = set(TARGET_CLASSES)
-            df_extra = df_extra[df_extra["label"].isin(valid_labels)]
-            logger.info(f"Data manual_override: {len(df_extra)} baris valid")
+            df_extra = df_extra[df_extra["label"].isin(set(TARGET_CLASSES))]
+            df_extra["features"] = df_extra["job_text_raw"].apply(preprocess_raw)
+            override_w = compute_override_weight(len(df_corpus), len(df_extra))
+            df_extra["_weight"] = override_w
+
+        # Pre-compute total bobot sekali — dipakai di logging & metrics JSON.
+        # .sum() lebih benar daripada len() * .iloc[0] karena tidak mengasumsikan
+        # homogenitas bobot di seluruh baris (future-proof jika bobot per-baris ditambahkan).
+        total_corpus_weight   = df_corpus["_weight"].sum()
+        total_override_weight = df_extra["_weight"].sum() if len(df_extra) > 0 else 0.0
+        actual_influence_pct  = (
+            total_override_weight / (total_corpus_weight + total_override_weight) * 100
+            if total_override_weight > 0 else 0.0
+        )
 
         if len(df_extra) > 0:
-            df_all = pd.concat([df_corpus, df_extra], ignore_index=True)
-            # Deduplicate: preferensikan data extra (manual override) jika job_text_raw sama
-            df_all = df_all.drop_duplicates(subset=["job_text_raw"], keep="last")
+            logger.info(
+                f"Data manual_override: {len(df_extra)} baris | "
+                f"weight={override_w:.4f}x (log-damped) | "
+                f"influence aktual={actual_influence_pct:.1f}% "
+                f"(target nominal {OVERRIDE_INFLUENCE_TARGET*100:.0f}%)"
+            )
         else:
-            df_all = df_corpus.copy()
             logger.info("Tidak ada data tambahan — menggunakan corpus asli saja")
 
-        logger.info(f"Total setelah merge & deduplicate: {len(df_all)} baris")
+        # Concat tanpa deduplication — semua frekuensi historis dipertahankan
+        df_all = pd.concat([df_corpus, df_extra], ignore_index=True) if len(df_extra) > 0 else df_corpus.copy()
+
+        mask = df_all["features"].str.len() > 0
+        df_all = df_all[mask]
+        logger.info(f"Total setelah merge (tanpa deduplicate): {len(df_all)} baris")
 
         if len(df_all) < 20:
             raise ValueError(f"Data terlalu sedikit untuk training: {len(df_all)} baris (minimum 20)")
 
-        # ── STEP 3: PREPROCESSING ────────────────────────────
-        write_status("preprocessing", "Preprocessing teks...")
-        X_all = df_all["job_text_raw"].apply(preprocess_text)
+        X_all = df_all["features"]
         y_all = df_all["label"]
-        mask = X_all.str.len() > 0
-        X_all, y_all = X_all[mask], y_all[mask]
-        logger.info(f"Setelah filter kosong: {len(X_all)} baris")
+        w_all = df_all["_weight"]
 
-        # ── STEP 4: SPLIT TRAIN / TEST ───────────────────────
-        # Cek apakah test_set_3.csv ada untuk hold-out
-        if TEST_PATH.exists():
-            df_test = pd.read_csv(TEST_PATH, sep=";", dtype=str).dropna(subset=["job_text_raw", "label"])
-            X_test = df_test["job_text_raw"].apply(preprocess_text)
-            y_test = df_test["label"]
-            mask_t = X_test.str.len() > 0
-            X_test, y_test = X_test[mask_t], y_test[mask_t]
-            X_train, y_train = X_all, y_all
-            logger.info(f"Hold-out test dari file: {len(X_test)} baris")
-        else:
-            # Fallback: split 70/30 dari data gabungan
-            X_train, X_test, y_train, y_test = train_test_split(
-                X_all, y_all, test_size=0.3, random_state=42, stratify=y_all
-            )
-            logger.info(f"Hold-out test dari split 30%: {len(X_test)} baris")
+        # ── STEP 3: DYNAMIC SPLIT — selalu dari data gabungan terkini ────
+        # Test set statis (test_set.csv) tidak digunakan karena:
+        # (a) tidak mencerminkan pola baru dari data override
+        # (b) baseline_f1 dari JSON dihitung pada distribusi berbeda →
+        #     perbandingan apel vs jeruk, tidak valid untuk keputusan promote.
+        # Solusi: split dinamis, lalu evaluasi model LAMA pada test set YANG SAMA.
+        X_train, X_test, y_train, y_test, w_train, _ = train_test_split(
+            X_all, y_all, w_all, test_size=0.3, random_state=42, stratify=y_all
+        )
+        logger.info(f"Dynamic split: {len(X_train)} train | {len(X_test)} test")
 
-        # ── STEP 5: TRAINING ─────────────────────────────────
-        write_status("training", f"Training model baru... ({len(X_train)} sampel training)")
+        # ── STEP 4: BASELINE — evaluasi model LAMA pada test set yang sama ──
+        # Ini satu-satunya cara perbandingan yang jujur (apples-to-apples).
+        write_status("evaluating", "Mengevaluasi model lama pada test set baru...")
+        baseline_f1 = get_baseline_f1_on_testset(X_test, y_test)
 
+        # ── STEP 5: K-FOLD VALIDATION ────────────────────────
+        write_status("training", f"K-Fold validation & training... ({len(X_train)} sampel)")
         skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
         fold_metrics = []
         for i, (tr_idx, te_idx) in enumerate(skf.split(X_train, y_train)):
@@ -273,70 +347,68 @@ def main(extra_csv_path: str = None):
                 ('tfidf', TfidfVectorizer(max_features=3000, ngram_range=(1, 2), sublinear_tf=True, min_df=1)),
                 ('clf', LogisticRegression(max_iter=1000, class_weight='balanced', solver='lbfgs'))
             ])
-            m.fit(X_train.iloc[tr_idx], y_train.iloc[tr_idx])
+            # sample_weight diteruskan ke step 'clf' via Pipeline naming convention
+            m.fit(
+                X_train.iloc[tr_idx], y_train.iloc[tr_idx],
+                clf__sample_weight=w_train.iloc[tr_idx].values
+            )
             y_pred = m.predict(X_train.iloc[te_idx])
             rep = classification_report(y_train.iloc[te_idx], y_pred, output_dict=True, zero_division=0)
             fold_metrics.append(rep)
             write_status("training", f"K-Fold selesai: fold {i+1}/5 | acc={rep['accuracy']:.4f}")
 
-        # Train final model on full training set
+        # ── STEP 6: TRAINING MODEL FINAL ─────────────────────
         write_status("training", "Training model final pada seluruh data training...")
         candidate_model = Pipeline([
             ('tfidf', TfidfVectorizer(max_features=3000, ngram_range=(1, 2), sublinear_tf=True, min_df=1)),
             ('clf', LogisticRegression(max_iter=1000, class_weight='balanced', solver='lbfgs'))
         ])
-        candidate_model.fit(X_train, y_train)
-
-        # Simpan sebagai candidate (belum overwrite aktif)
+        candidate_model.fit(X_train, y_train, clf__sample_weight=w_train.values)
         joblib.dump(candidate_model, CANDIDATE_PATH)
         logger.info(f"Candidate model tersimpan: {CANDIDATE_PATH}")
 
-        # ── STEP 6: EVALUASI & KEPUTUSAN ─────────────────────
-        write_status("evaluating", "Mengevaluasi model baru vs model lama...")
-
+        # ── STEP 7: EVALUASI & KEPUTUSAN ─────────────────────
+        write_status("evaluating", "Mengevaluasi model baru vs model lama (test set sama)...")
         new_metrics = evaluate_model(candidate_model, X_test, y_test)
-        new_f1 = new_metrics["weighted_f1"]
-        delta = new_f1 - baseline_f1
+        new_f1  = new_metrics["weighted_f1"]
+        delta   = new_f1 - baseline_f1
 
-        logger.info(f"Baseline F1 : {baseline_f1:.4f}")
-        logger.info(f"Candidate F1: {new_f1:.4f}  (delta: {delta:+.4f})")
+        logger.info(f"Baseline F1 (old model, same test) : {baseline_f1:.4f}")
+        logger.info(f"Candidate F1 (new model, same test): {new_f1:.4f}  (delta: {delta:+.4f})")
 
-        # ── KEPUTUSAN ────────────────────────────────────────
         if baseline_f1 == 0.0:
-            # Tidak ada baseline (model lama belum pernah dievaluasi) → langsung promote
-            reason_promote = "Tidak ada baseline metrics → model baru dipromote"
             should_promote = True
+            reason = "Model lama tidak bisa dievaluasi (backup tidak ada) → model baru dipromote"
         elif delta >= MIN_IMPROVEMENT_THRESHOLD:
             should_promote = True
-            reason_promote = f"Model baru lebih baik (+{delta*100:.2f}% weighted F1)"
+            reason = f"Model baru lebih baik (+{delta*100:.2f}% weighted F1)"
         elif delta < -MAX_REGRESSION_ALLOWED:
             should_promote = False
-            reason_rollback = f"Model baru lebih buruk secara signifikan ({delta*100:.2f}% weighted F1)"
+            reason = f"Model baru lebih buruk secara signifikan ({delta*100:.2f}% weighted F1)"
         else:
             should_promote = False
-            reason_rollback = (
+            reason = (
                 f"Peningkatan tidak signifikan ({delta*100:.2f}% weighted F1, "
                 f"minimum dibutuhkan: +{MIN_IMPROVEMENT_THRESHOLD*100:.1f}%)"
             )
 
         if not should_promote:
-            do_rollback(reason_rollback, baseline_f1, new_f1)
+            do_rollback(reason, baseline_f1, new_f1)
             return
 
         # ── STEP 7: PROMOTE ──────────────────────────────────
         write_status("promoting", "Model baru lebih baik — mempromote model baru...")
-
-        # Atomic rename: candidate → aktif
         shutil.move(str(CANDIDATE_PATH), str(PIPELINE_PATH))
         logger.info(f"Model baru dipromote: {PIPELINE_PATH}")
 
-        # Update metrics JSON
         avg_acc = float(np.mean([f["accuracy"] for f in fold_metrics]))
-        y_pred_final = candidate_model.predict(X_test)
         new_metrics_full = {
-            "methodology": "Internal MIF + manual_override",
+            "methodology": "Internal MIF + manual_override (sample_weight, dynamic split)",
             "retrained_at": datetime.now().isoformat(),
             "extra_samples_added": len(df_extra),
+            "override_weight_used": round(df_extra["_weight"].iloc[0], 4) if len(df_extra) > 0 else 1.0,
+            "override_influence_pct_actual": round(actual_influence_pct, 2),
+            "override_influence_target_pct": OVERRIDE_INFLUENCE_TARGET * 100,
             "total_training_samples": len(X_train),
             "k_fold": {
                 "accuracy_mean": avg_acc,
@@ -345,12 +417,12 @@ def main(extra_csv_path: str = None):
             },
             "threshold_config": 0.50,
             "hold_out_test": classification_report(
-                y_test,
-                y_pred_final,
-                output_dict=True,
-                zero_division=0
+                y_test, candidate_model.predict(X_test),
+                output_dict=True, zero_division=0
             ),
+            # Perbandingan fair: kedua model dievaluasi pada test set yang SAMA
             "comparison": {
+                "note": "Both models evaluated on identical dynamic test set",
                 "old_weighted_f1": baseline_f1,
                 "new_weighted_f1": new_f1,
                 "delta": round(delta, 4),
@@ -358,10 +430,9 @@ def main(extra_csv_path: str = None):
         }
         METRICS_PATH.write_text(json.dumps(new_metrics_full, indent=2, ensure_ascii=False))
 
-
         write_status(
             stage="promoted",
-            message=f"Model baru berhasil dipromote. {reason_promote}",
+            message=f"Model baru berhasil dipromote. {reason}",
             extra={
                 "result": "promoted",
                 "old_f1": baseline_f1,
@@ -382,13 +453,13 @@ def main(extra_csv_path: str = None):
             new_f1=0.0
         )
         # Override stage ke 'failed' agar UI tahu ini bukan rollback biasa
-        status = json.loads(STATUS_PATH.read_text())
-        status["stage"] = "failed"
-        STATUS_PATH.write_text(json.dumps(status, indent=2, ensure_ascii=False))
+        lock = FileLock(LOCK_PATH, timeout=10)
+        with lock:
+            status = json.loads(STATUS_PATH.read_text())
+            status["stage"] = "failed"
+            STATUS_PATH.write_text(json.dumps(status, indent=2, ensure_ascii=False))
         sys.exit(1)
 
 
 if __name__ == "__main__":
-    # Argumen: [extra_csv_path]
-    extra_csv = sys.argv[1] if len(sys.argv) > 1 else None
-    main(extra_csv)
+    main(sys.argv[1] if len(sys.argv) > 1 else None)

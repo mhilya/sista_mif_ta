@@ -39,7 +39,7 @@ class FastApiWorkerService
                 throw new \Exception("Tidak dapat membaca file: {$filePath}");
             }
 
-            $response = $this->getClient(config('services.fastapi.timeout', 120))
+            $response = $this->getClient(15)
                 ->attach('file', $fileStream, $filename)
                 ->post($this->baseUrl . '/api/v1/classify');
 
@@ -58,6 +58,24 @@ class FastApiWorkerService
             if (is_resource($fileStream)) {
                 fclose($fileStream);
             }
+        }
+    }
+
+    public function getClassifyStatus(string $jobId): array
+    {
+        try {
+            $response = $this->getClient(10)->get($this->baseUrl . "/api/v1/classify/status/{$jobId}");
+            if ($response->failed()) {
+                if ($response->status() === 404) {
+                    return ['status' => 'error', 'message' => 'Job ID tidak ditemukan di server.'];
+                }
+                return ['status' => 'error', 'message' => "Gagal menghubungi server: HTTP {$response->status()}"];
+            }
+            return $response->json();
+        } catch (ConnectionException $e) {
+            return ['status' => 'error', 'message' => 'Koneksi ke server AI terputus.'];
+        } catch (\Exception $e) {
+            return ['status' => 'error', 'message' => "Kesalahan sistem: {$e->getMessage()}"];
         }
     }
 
@@ -83,6 +101,10 @@ class FastApiWorkerService
 
             if ($response->status() === 409) {
                 return ['error' => 'Re-training sedang berjalan. Tunggu hingga selesai.'];
+            }
+
+            if ($response->status() === 429) {
+                return ['error' => 'Sistem sibuk. Permintaan retraining lain sedang diproses.'];
             }
 
             if ($response->failed()) {
@@ -113,6 +135,9 @@ class FastApiWorkerService
             $response = $this->getClient(10)->get($this->baseUrl . '/api/v1/retrain/status');
 
             if ($response->failed()) {
+                if ($response->status() === 429) {
+                    return $response->json(); // Return stage locked dari FastAPI
+                }
                 return ['stage' => 'unknown', 'message' => 'Tidak dapat membaca status dari FastAPI.'];
             }
 
