@@ -138,7 +138,6 @@ def classify_ml(job_text: str, pipeline) -> dict:
         logger.error(f"ML_INFER_ERROR | job_text='{job_text[:50]}' | err={e}")
         raise HTTPException(status_code=500, detail=f"ML inference failed: {str(e)}")
 
-# [KEEP v3] Ekstraksi teks dari format Kemendikbud
 def extract_kemendik_text(row: pd.Series, df_columns: list) -> str:
     f5b_col   = find_column_by_code(df_columns, "f5b")
     f5c_col   = find_column_by_code(df_columns, "f5c")
@@ -175,7 +174,6 @@ def health_check():
 
 @app.post("/api/v1/retrain", dependencies=[Depends(verify_token)])
 async def trigger_retrain(file: UploadFile = File(None)):
-    # [v4] FileLock mencegah race condition dari concurrent requests
     lock = FileLock(LOCK_PATH, timeout=2)
     try:
         with lock:
@@ -221,7 +219,6 @@ def retrain_status():
     if not STATUS_PATH.exists():
         return JSONResponse(content={"stage": "idle", "message": "Belum ada proses re-training."})
     try:
-        # [v4] Lock saat baca untuk menghindari partial write dari worker
         lock = FileLock(LOCK_PATH, timeout=2)
         with lock:
             data = json.loads(STATUS_PATH.read_text(encoding="utf-8"))
@@ -241,7 +238,6 @@ def retrain_status():
         return JSONResponse(content={"stage": "unknown", "message": "Status tidak terbaca."})
 
 
-# [KEEP v3] Endpoint reload manual — berguna jika pipeline perlu di-reload tanpa restart server
 @app.post("/api/v1/retrain/reload", dependencies=[Depends(verify_token)])
 def reload_model():
     try:

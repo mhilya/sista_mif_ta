@@ -63,8 +63,6 @@ def clean_text(text: str) -> str:
     tokens = [w for w in text.split() if w not in COMPANY_STOPWORDS and len(w) >= 3]
     return " ".join([stemmer.stem(w) for w in tokens])
 
-# [FIX v4] Logika lebih ketat: hanya flag jika token teks sepenuhnya subset dari nama
-# (max 3 token) — bukan sekadar rasio overlap 50% seperti v3 yang rawan false positive.
 def is_likely_name(text: str, full_name: str) -> bool:
     if not text or not full_name: return False
     text_clean = re.sub(r'[^\w\s]', '', text.lower())
@@ -110,7 +108,6 @@ def main():
         mask = ~df[col_status].str.lower().str.strip().isin(blacklist)
         df = df[mask].copy()
 
-    # Stemming berat terjadi HANYA di sini — satu kali saat corpus preparation
     df["job_text_raw"] = df[col_jabatan].apply(clean_text)
 
     if col_klasifikasi:
@@ -153,7 +150,6 @@ def main():
     print("DATA PELATIHAN (TRAINING SET):")
     print(train_df["label"].value_counts().to_string())
 
-    # [KEEP v3] Distribusi per kelas di test set — berguna untuk deteksi class imbalance
     print("\nDATA PENGUJIAN (TEST SET):")
     for cls in TARGET_CLASSES:
         c = test_df["label"].value_counts().get(cls, 0)

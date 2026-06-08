@@ -8,7 +8,7 @@ code_to_name = {}
 with open('wilayah_dapodik_final.csv', mode='r', encoding='utf-8') as f:
     reader = csv.DictReader(f)
     for row in reader:
-        # Bersihkan nama kabupaten/kota dan provinsi agar pencarian lebih akurat
+
         kab = row['Kabupaten_Kota'].replace('Kab. ', '').replace('Kota Adm. ', '').replace('Kota ', '')
         prov = row['Provinsi'].replace('Prov. ', '')
         
@@ -20,7 +20,6 @@ with open('wilayah_dapodik_final.csv', mode='r', encoding='utf-8') as f:
         if kab == 'Adm. Kep. Seribu':
             kab = 'Kepulauan Seribu'
             
-        # Format query pencarian, contoh: "Malang, Jawa Timur, Indonesia"
         if prov == 'Luar Negeri':
             query = kab
         else:
@@ -35,22 +34,20 @@ coords = {}
 
 print(f"Mulai mencari koordinat untuk {len(code_to_name)} wilayah...")
 
-# Looping melalui semua data yang ada di CSV
 for code, info in code_to_name.items():
     query = info['query']
     name = info['name']
     max_retries = 3
     for attempt in range(max_retries):
         try:
-            time.sleep(1) # Jeda 1 detik agar tidak terkena limit API Nominatim
-            # Menambahkan parameter timeout eksplisit jika diperlukan, default biasanya 1 detik
+            time.sleep(1)
             location = geolocator.geocode(query, timeout=5)
             if location:
                 coords[code] = {"name": name, "coords": [location.latitude, location.longitude]}
                 print(f"Geocoded: {code} -> {query} -> {coords[code]['coords']}")
             else:
                 print(f"NOT FOUND: {code} -> {query}")
-            break # Berhasil diproses (entah ketemu atau tidak ketemu), hentikan loop retry
+            break 
         except GeocoderTimedOut:
             print(f"TIMEOUT (Percobaan {attempt + 1}/{max_retries}): {code} -> {query}")
             if attempt == max_retries - 1:

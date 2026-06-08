@@ -11,7 +11,6 @@ Alur:
 6. Evaluasi candidate pada test set yang sama → delta terhadap old model
 7. Promote jika lebih baik; rollback jika tidak
 8. Setiap write status dilindungi FileLock (atomic)
-9. [v5] Semua event log disimpan ke file JSONL terpisah untuk audit BAB 4
 """
 import sys
 import json
@@ -42,7 +41,7 @@ warnings.filterwarnings("ignore")
 BASE_DIR = Path(__file__).parent.parent
 ML_DIR   = BASE_DIR / "ml_assets"
 DATA_DIR = BASE_DIR.parent / "data" / "processed"
-LOG_DIR  = ML_DIR / "logs"   # [v5] Direktori log terpisah
+LOG_DIR  = ML_DIR / "logs"
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 PIPELINE_PATH     = ML_DIR / "ml_pipeline_internal.pkl"
@@ -54,7 +53,6 @@ LOCK_PATH         = ML_DIR / "retrain_status.lock"
 CORPUS_PATH       = DATA_DIR / "training_corpus.csv"
 TEST_PATH         = DATA_DIR / "test_set.csv"
 
-# [v5] Nama file log berbasis timestamp — satu file per sesi retraining
 SESSION_TS = datetime.now().strftime("%Y%m%d_%H%M%S")
 LOG_FILE_PATH = LOG_DIR / f"retrain_log_{SESSION_TS}.jsonl"
 
@@ -81,7 +79,7 @@ STOPWORDS = {
 stemmer = StemmerFactory().create_stemmer()
 
 # ──────────────────────────────────────────────────────────────
-# [v5] CUSTOM JSON FORMATTER — setiap log entry jadi JSON valid
+# CUSTOM JSON FORMATTER
 # ──────────────────────────────────────────────────────────────
 class JsonFormatter(logging.Formatter):
     """Format log record sebagai JSON satu baris (JSONL)."""
@@ -92,7 +90,6 @@ class JsonFormatter(logging.Formatter):
             "logger": record.name,
             "message": record.getMessage(),
         }
-        # [v5] Jika ada extra data (stage, metrics, dll), gabungkan ke root
         if hasattr(record, "stage"):
             log_entry["stage"] = record.stage
         if hasattr(record, "event_type"):
@@ -102,7 +99,7 @@ class JsonFormatter(logging.Formatter):
         return json.dumps(log_entry, ensure_ascii=False)
 
 # ──────────────────────────────────────────────────────────────
-# [v5] DUAL LOGGER SETUP — console + file JSONL
+# DUAL LOGGER SETUP
 # ──────────────────────────────────────────────────────────────
 logger = logging.getLogger("retrain_worker")
 logger.setLevel(logging.INFO)
@@ -123,7 +120,7 @@ logger.addHandler(file_handler)
 logger.info(f"[init] Log file tersimpan di: {LOG_FILE_PATH}")
 
 # ──────────────────────────────────────────────────────────────
-# [v5] STRUCTURED LOG HELPER — untuk event penting dengan metadata
+# STRUCTURED LOG HELPER
 # ──────────────────────────────────────────────────────────────
 def log_event(event_type: str, message: str, stage: str = "info", metadata: dict = None):
     """
@@ -148,7 +145,7 @@ def compute_override_weight(n_corpus: int, n_override: int) -> float:
     return round(w_log, 4)
 
 # ──────────────────────────────────────────────────────────────
-# STATUS WRITER — atomic dengan FileLock (v4)
+# STATUS WRITER
 # ──────────────────────────────────────────────────────────────
 def write_status(stage: str, message: str, extra: dict = None):
     lock = FileLock(LOCK_PATH, timeout=10)
@@ -156,7 +153,6 @@ def write_status(stage: str, message: str, extra: dict = None):
         payload = {"stage": stage, "message": message, "timestamp": datetime.now().isoformat()}
         if extra: payload.update(extra)
         STATUS_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
-    # [v5] Tulis juga ke log file dengan stage tracking
     logger.info(f"[{stage}] {message}", extra={"stage": stage})
 
 # ──────────────────────────────────────────────────────────────
@@ -228,7 +224,6 @@ def do_rollback(reason: str, old_f1: float, new_f1: float):
     else:
         logger.warning("File .bak tidak ditemukan — pkl aktif dibiarkan.")
 
-    # [v5] Log event rollback dengan metadata lengkap
     log_event(
         event_type="rollback",
         message=f"Model lama dipertahankan. {reason}",
@@ -246,7 +241,6 @@ def do_rollback(reason: str, old_f1: float, new_f1: float):
 # MAIN
 # ──────────────────────────────────────────────────────────────
 def main(extra_csv_path: str = None):
-    # [v5] Log awal sesi — penting untuk audit trail
     log_event(
         event_type="session_start",
         message=f"Retraining session dimulai. Log file: {LOG_FILE_PATH.name}",
@@ -314,7 +308,6 @@ def main(extra_csv_path: str = None):
         y_all = df_all["label"]
         w_all = df_all["_weight"]
 
-        # [v5] Log event data merge dengan metadata
         log_event(
             event_type="data_merged",
             message=f"Data training siap: {len(df_all)} baris",
@@ -342,7 +335,7 @@ def main(extra_csv_path: str = None):
         write_status("training", f"K-Fold validation & training... ({len(X_train)} sampel)")
         skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
         fold_metrics = []
-        fold_accuracies = []  # [v5] untuk log ringkas
+        fold_accuracies = []
         for i, (tr_idx, te_idx) in enumerate(skf.split(X_train, y_train)):
             m = Pipeline([
                 ('tfidf', TfidfVectorizer(max_features=3000, ngram_range=(1, 2), sublinear_tf=True, min_df=1)),
@@ -358,7 +351,6 @@ def main(extra_csv_path: str = None):
             fold_accuracies.append(round(rep['accuracy'], 4))
             write_status("training", f"K-Fold selesai: fold {i+1}/5 | acc={rep['accuracy']:.4f}")
 
-        # [v5] Log ringkas hasil K-Fold
         log_event(
             event_type="kfold_completed",
             message=f"K-Fold 5 lipatan selesai. Akurasi per fold: {fold_accuracies}",
@@ -405,7 +397,6 @@ def main(extra_csv_path: str = None):
                 f"minimum dibutuhkan: +{MIN_IMPROVEMENT_THRESHOLD*100:.1f}%)"
             )
 
-        # [v5] Log event evaluasi dengan metadata lengkap — ini yang akan dikutip di BAB 4
         log_event(
             event_type="evaluation_completed",
             message=f"Evaluasi selesai. Delta F1: {delta:+.4f} ({'promote' if should_promote else 'rollback'})",
@@ -460,7 +451,6 @@ def main(extra_csv_path: str = None):
         }
         METRICS_PATH.write_text(json.dumps(new_metrics_full, indent=2, ensure_ascii=False), encoding="utf-8")
 
-        # [v5] Log event promote final
         log_event(
             event_type="model_promoted",
             message=f"Model baru berhasil dipromote. {reason}",
@@ -492,7 +482,6 @@ def main(extra_csv_path: str = None):
     except Exception as e:
         logger.error(f"ERROR saat training: {type(e).__name__}: {e}", exc_info=True)
 
-        # [v5] Log event error dengan traceback info
         log_event(
             event_type="training_error",
             message=f"Training gagal: {type(e).__name__}: {str(e)[:200]}",
