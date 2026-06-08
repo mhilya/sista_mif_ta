@@ -181,7 +181,7 @@ async def trigger_retrain(file: UploadFile = File(None)):
         with lock:
             if STATUS_PATH.exists():
                 try:
-                    current = json.loads(STATUS_PATH.read_text())
+                    current = json.loads(STATUS_PATH.read_text(encoding="utf-8"))
                     if current.get("stage") in ["started", "backup", "loading_data", "preprocessing", "training", "evaluating", "promoting"]:
                         raise HTTPException(status_code=409, detail="Re-training sedang berjalan. Tunggu hingga selesai.")
                 except json.JSONDecodeError:
@@ -199,7 +199,7 @@ async def trigger_retrain(file: UploadFile = File(None)):
                 "stage": "started",
                 "message": "Memulai proses re-training...",
                 "timestamp": __import__('datetime').datetime.now().isoformat(),
-            }, ensure_ascii=False))
+            }, ensure_ascii=False), encoding="utf-8")
 
             cmd = [sys.executable, str(RETRAIN_WORKER)]
             if extra_csv_path: cmd.append(extra_csv_path)
@@ -224,13 +224,13 @@ def retrain_status():
         # [v4] Lock saat baca untuk menghindari partial write dari worker
         lock = FileLock(LOCK_PATH, timeout=2)
         with lock:
-            data = json.loads(STATUS_PATH.read_text())
+            data = json.loads(STATUS_PATH.read_text(encoding="utf-8"))
             terminal_stages = {"promoted", "rolled_back", "failed"}
             if data.get("stage") in terminal_stages and not data.get("_reloaded"):
                 try:
                     app.state.pipeline = joblib.load(PIPELINE_PATH)
                     data["_reloaded"] = True
-                    STATUS_PATH.write_text(json.dumps(data, indent=2, ensure_ascii=False))
+                    STATUS_PATH.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
                     logger.info(f"Pipeline di-reload setelah retrain (stage={data['stage']})")
                 except Exception as e:
                     logger.error(f"Gagal reload pipeline: {e}")
@@ -262,7 +262,7 @@ def process_classification_bg(job_id: str, file_path: Path, filename: str, pipel
         }
         if results is not None:
             data["results"] = results
-        status_file.write_text(json.dumps(data, ensure_ascii=False))
+        status_file.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
 
     try:
         update_status("processing", "Parsing file excel/csv...")
@@ -397,7 +397,7 @@ async def classify_tracer(background_tasks: BackgroundTasks, file: UploadFile = 
     temp_file.write_bytes(contents)
     
     status_file = JOBS_DIR / f"{job_id}.json"
-    status_file.write_text(json.dumps({"status": "pending", "message": "Job masuk antrean"}))
+    status_file.write_text(json.dumps({"status": "pending", "message": "Job masuk antrean"}), encoding="utf-8")
     
     background_tasks.add_task(process_classification_bg, job_id, temp_file, file.filename, app.state.pipeline)
     
@@ -410,7 +410,7 @@ def classify_status(job_id: str):
         raise HTTPException(status_code=404, detail="Job not found")
     
     try:
-        data = json.loads(status_file.read_text())
+        data = json.loads(status_file.read_text(encoding="utf-8"))
         return JSONResponse(content=data)
     except json.JSONDecodeError:
         return JSONResponse(content={"status": "processing", "message": "Updating status..."})

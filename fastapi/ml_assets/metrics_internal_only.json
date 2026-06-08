@@ -1,8 +1,8 @@
 {
   "methodology": "Internal MIF only",
   "k_fold": {
-    "accuracy_mean": 0.728,
-    "accuracy_std": 0.08634813257969161,
+    "accuracy_mean": 0.712,
+    "accuracy_std": 0.08447484832777147,
     "folds": [
       {
         "Data Analyst": {
@@ -12,15 +12,15 @@
           "support": 1.0
         },
         "Non-IT": {
-          "precision": 0.8,
-          "recall": 0.8888888888888888,
-          "f1-score": 0.8421052631578947,
+          "precision": 0.8095238095238095,
+          "recall": 0.9444444444444444,
+          "f1-score": 0.8717948717948718,
           "support": 18.0
         },
         "Programmer": {
-          "precision": 0.8,
+          "precision": 0.8888888888888888,
           "recall": 0.6153846153846154,
-          "f1-score": 0.6956521739130435,
+          "f1-score": 0.7272727272727273,
           "support": 13.0
         },
         "Wirausaha Informatika": {
@@ -29,17 +29,17 @@
           "f1-score": 0.8421052631578947,
           "support": 18.0
         },
-        "accuracy": 0.8,
+        "accuracy": 0.82,
         "macro avg": {
-          "precision": 0.6000000000000001,
-          "recall": 0.5982905982905983,
-          "f1-score": 0.5949656750572082,
+          "precision": 0.6246031746031746,
+          "recall": 0.6121794871794872,
+          "f1-score": 0.6102932155563734,
           "support": 50.0
         },
         "weighted avg": {
-          "precision": 0.784,
-          "recall": 0.8,
-          "f1-score": 0.7871853546910755,
+          "precision": 0.8105396825396824,
+          "recall": 0.82,
+          "f1-score": 0.8060949576739049,
           "support": 50.0
         }
       },
@@ -51,9 +51,9 @@
           "support": 1.0
         },
         "Non-IT": {
-          "precision": 0.7727272727272727,
-          "recall": 1.0,
-          "f1-score": 0.8717948717948718,
+          "precision": 0.7619047619047619,
+          "recall": 0.9411764705882353,
+          "f1-score": 0.8421052631578947,
           "support": 17.0
         },
         "Programmer": {
@@ -68,37 +68,37 @@
           "f1-score": 0.75,
           "support": 18.0
         },
-        "accuracy": 0.76,
+        "accuracy": 0.74,
         "macro avg": {
-          "precision": 0.6136363636363636,
-          "recall": 0.5654761904761905,
-          "f1-score": 0.555448717948718,
+          "precision": 0.6109307359307359,
+          "recall": 0.5507703081232493,
+          "f1-score": 0.5480263157894737,
           "support": 50.0
         },
         "weighted avg": {
-          "precision": 0.7881818181818181,
-          "recall": 0.76,
-          "f1-score": 0.7344102564102565,
+          "precision": 0.7845021645021645,
+          "recall": 0.74,
+          "f1-score": 0.7243157894736842,
           "support": 50.0
         }
       },
       {
         "Data Analyst": {
-          "precision": 1.0,
+          "precision": 0.25,
           "recall": 1.0,
-          "f1-score": 1.0,
+          "f1-score": 0.4,
           "support": 1.0
         },
         "Non-IT": {
-          "precision": 0.6296296296296297,
-          "recall": 1.0,
-          "f1-score": 0.7727272727272727,
+          "precision": 0.6,
+          "recall": 0.8823529411764706,
+          "f1-score": 0.7142857142857143,
           "support": 17.0
         },
         "Programmer": {
           "precision": 1.0,
-          "recall": 0.35714285714285715,
-          "f1-score": 0.5263157894736842,
+          "recall": 0.2857142857142857,
+          "f1-score": 0.4444444444444444,
           "support": 14.0
         },
         "Wirausaha Informatika": {
@@ -107,31 +107,31 @@
           "f1-score": 0.9142857142857143,
           "support": 18.0
         },
-        "accuracy": 0.78,
+        "accuracy": 0.72,
         "macro avg": {
-          "precision": 0.8927015250544663,
-          "recall": 0.8115079365079365,
-          "f1-score": 0.8033321941216678,
+          "precision": 0.6977941176470588,
+          "recall": 0.7642390289449112,
+          "f1-score": 0.6182539682539683,
           "support": 50.0
         },
         "weighted avg": {
-          "precision": 0.8528976034858389,
-          "recall": 0.78,
-          "f1-score": 0.7592385509227614,
+          "precision": 0.8278235294117647,
+          "recall": 0.72,
+          "f1-score": 0.7044444444444444,
           "support": 50.0
         }
       },
       {
         "Data Analyst": {
-          "precision": 1.0,
+          "precision": 0.3333333333333333,
           "recall": 1.0,
-          "f1-score": 1.0,
+          "f1-score": 0.5,
           "support": 1.0
         },
         "Non-IT": {
-          "precision": 0.6538461538461539,
-          "recall": 1.0,
-          "f1-score": 0.7906976744186046,
+          "precision": 0.6666666666666666,
+          "recall": 0.9411764705882353,
+          "f1-score": 0.7804878048780488,
           "support": 17.0
         },
         "Programmer": {
@@ -146,17 +146,17 @@
           "f1-score": 0.7428571428571429,
           "support": 18.0
         },
-        "accuracy": 0.74,
+        "accuracy": 0.72,
         "macro avg": {
-          "precision": 0.8546380090497737,
-          "recall": 0.7876984126984127,
-          "f1-score": 0.7833887043189369,
+          "precision": 0.6911764705882353,
+          "recall": 0.7729925303454716,
+          "f1-score": 0.6558362369337979,
           "support": 50.0
         },
         "weighted avg": {
-          "precision": 0.797601809954751,
-          "recall": 0.74,
-          "f1-score": 0.724265780730897,
+          "precision": 0.7886274509803921,
+          "recall": 0.72,
+          "f1-score": 0.7107944250871081,
           "support": 50.0
         }
       },
@@ -210,9 +210,9 @@
       "support": 2.0
     },
     "Non-IT": {
-      "precision": 0.7777777777777778,
-      "recall": 0.9722222222222222,
-      "f1-score": 0.8641975308641975,
+      "precision": 0.7727272727272727,
+      "recall": 0.9444444444444444,
+      "f1-score": 0.85,
       "support": 36.0
     },
     "Programmer": {
@@ -227,17 +227,17 @@
       "f1-score": 0.8888888888888888,
       "support": 39.0
     },
-    "accuracy": 0.8411214953271028,
+    "accuracy": 0.8317757009345794,
     "macro avg": {
-      "precision": 0.6462301587301588,
-      "recall": 0.6321581196581196,
-      "f1-score": 0.6282716049382716,
+      "precision": 0.6449675324675325,
+      "recall": 0.6252136752136752,
+      "f1-score": 0.6247222222222222,
       "support": 107.0
     },
     "weighted avg": {
-      "precision": 0.8404539385847796,
-      "recall": 0.8411214953271028,
-      "f1-score": 0.8278296988577363,
+      "precision": 0.8387547032406844,
+      "recall": 0.8317757009345794,
+      "f1-score": 0.8230529595015575,
       "support": 107.0
     }
   }

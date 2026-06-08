@@ -160,7 +160,7 @@ def write_status(stage: str, message: str, extra: dict = None):
     with lock:
         payload = {"stage": stage, "message": message, "timestamp": datetime.now().isoformat()}
         if extra: payload.update(extra)
-        STATUS_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False))
+        STATUS_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     logger.info(f"[{stage}] {message}")
 
 # ──────────────────────────────────────────────────────────────
@@ -428,7 +428,7 @@ def main(extra_csv_path: str = None):
                 "delta": round(delta, 4),
             }
         }
-        METRICS_PATH.write_text(json.dumps(new_metrics_full, indent=2, ensure_ascii=False))
+        METRICS_PATH.write_text(json.dumps(new_metrics_full, indent=2, ensure_ascii=False), encoding="utf-8")
 
         write_status(
             stage="promoted",
@@ -455,9 +455,9 @@ def main(extra_csv_path: str = None):
         # Override stage ke 'failed' agar UI tahu ini bukan rollback biasa
         lock = FileLock(LOCK_PATH, timeout=10)
         with lock:
-            status = json.loads(STATUS_PATH.read_text())
+            status = json.loads(STATUS_PATH.read_text(encoding="utf-8"))
             status["stage"] = "failed"
-            STATUS_PATH.write_text(json.dumps(status, indent=2, ensure_ascii=False))
+            STATUS_PATH.write_text(json.dumps(status, indent=2, ensure_ascii=False), encoding="utf-8")
         sys.exit(1)
 
 

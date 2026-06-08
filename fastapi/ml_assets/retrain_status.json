@@ -1,10 +1,10 @@
 {
   "stage": "rolled_back",
-  "message": "Model lama dipertahankan. Model baru lebih buruk secara signifikan (-22.52% weighted F1)",
-  "timestamp": "2026-05-28T16:37:10.275000",
+  "message": "Model lama dipertahankan. Model baru lebih buruk secara signifikan (-20.44% weighted F1)",
+  "timestamp": "2026-06-08T11:35:03.809787",
   "result": "rolled_back",
-  "reason": "Model baru lebih buruk secara signifikan (-22.52% weighted F1)",
-  "old_f1": 0.8788,
-  "new_f1": 0.6536,
+  "reason": "Model baru lebih buruk secara signifikan (-20.44% weighted F1)",
+  "old_f1": 0.9064,
+  "new_f1": 0.702,
   "_reloaded": true
 }

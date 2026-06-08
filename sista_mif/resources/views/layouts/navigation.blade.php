@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <img src="{{ asset('images/logo_sista_mif_dashboard.png') }}" class="block h-12 w-auto object-contain" alt="Logo Dashboard" />
                     </a>
                 </div>
 
