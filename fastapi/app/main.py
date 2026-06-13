@@ -23,9 +23,13 @@ from filelock import FileLock, Timeout
 # ──────────────────────────────────────────────────────────────
 BASE_DIR = Path(__file__).parent.parent
 ML_DIR = BASE_DIR / "ml_assets"
+DATA_DIR = BASE_DIR.parent / "data"
+KETERANGAN_PATH = DATA_DIR / "keterangan_ts_kemendiktisaintek.csv"
+COORDS_PATH = DATA_DIR / "kabupaten_coords.json"
 PIPELINE_PATH  = ML_DIR / "ml_pipeline_internal.pkl"
 STATUS_PATH    = ML_DIR / "retrain_status.json"
 LOCK_PATH      = ML_DIR / "retrain_status.lock"
+METRICS_PATH   = ML_DIR / "metrics_internal_only.json"
 RETRAIN_WORKER = Path(__file__).parent / "retrain_worker.py"
 TEMP_DIR       = ML_DIR / "tmp"
 TEMP_DIR.mkdir(parents=True, exist_ok=True)
@@ -236,6 +240,40 @@ def retrain_status():
         return JSONResponse(status_code=429, content={"stage": "locked", "message": "Status sedang diupdate sistem."})
     except Exception:
         return JSONResponse(content={"stage": "unknown", "message": "Status tidak terbaca."})
+
+@app.get("/api/v1/metrics/internal", dependencies=[Depends(verify_token)])
+def get_internal_metrics():
+    if not METRICS_PATH.exists():
+        return JSONResponse(status_code=404, content={"status": "error", "message": "Metrics file not found"})
+    try:
+        data = json.loads(METRICS_PATH.read_text(encoding="utf-8"))
+        return JSONResponse(content=data)
+    except Exception as e:
+        logger.error(f"Failed to read metrics: {e}")
+        return JSONResponse(status_code=500, content={"status": "error", "message": "Failed to read metrics"})
+
+from fastapi.responses import Response
+
+@app.get("/api/v1/data/keterangan", dependencies=[Depends(verify_token)])
+def get_keterangan_csv():
+    if not KETERANGAN_PATH.exists():
+        return JSONResponse(status_code=404, content={"status": "error", "message": "CSV file not found"})
+    try:
+        return Response(content=KETERANGAN_PATH.read_bytes(), media_type="text/csv")
+    except Exception as e:
+        logger.error(f"Failed to read CSV: {e}")
+        return JSONResponse(status_code=500, content={"status": "error", "message": "Failed to read CSV"})
+
+@app.get("/api/v1/data/kabupaten_coords", dependencies=[Depends(verify_token)])
+def get_coords_json():
+    if not COORDS_PATH.exists():
+        return JSONResponse(status_code=404, content={"status": "error", "message": "Coords file not found"})
+    try:
+        data = json.loads(COORDS_PATH.read_text(encoding="utf-8"))
+        return JSONResponse(content=data)
+    except Exception as e:
+        logger.error(f"Failed to read coords: {e}")
+        return JSONResponse(status_code=500, content={"status": "error", "message": "Failed to read coords"})
 
 
 @app.post("/api/v1/retrain/reload", dependencies=[Depends(verify_token)])

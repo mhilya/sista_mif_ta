@@ -14,16 +14,20 @@ class KemendikDataController extends Controller
             'total_kemendik' => KemendikRawData::count(),
         ];
 
-        $keteranganPath = base_path('../data/keterangan_ts_kemendiktisaintek.csv');
         $keterangan = [];
-        if (file_exists($keteranganPath)) {
-            $lines = file($keteranganPath);
+        $csvText = app(\App\Services\FastApiWorkerService::class)->getKemendikKeteranganCsv();
+        
+        if ($csvText) {
+            $lines = explode("\n", trim($csvText));
             if (count($lines) > 0) {
                 $rawHeaders = str_getcsv(trim($lines[0]), ';');
                 $headers = array_map('trim', $rawHeaders);
                 
                 for ($i = 1; $i < count($lines); $i++) {
-                    $row = str_getcsv(trim($lines[$i]), ';');
+                    $rowStr = trim($lines[$i]);
+                    if ($rowStr === '') continue;
+                    
+                    $row = str_getcsv($rowStr, ';');
                     foreach ($headers as $index => $header) {
                         $val = trim($row[$index] ?? '');
                         if ($val !== '') {
@@ -75,8 +79,7 @@ class KemendikDataController extends Controller
         }, ['< 2 Juta' => 0, '2 - 4 Juta' => 0, '4 - 6 Juta' => 0, '> 6 Juta' => 0]);
         $chartPendapatan = array_filter($chartPendapatan); 
 
-        $coordsPath = base_path('../data/kabupaten_coords.json');
-        $kabupatenCoords = file_exists($coordsPath) ? json_decode(file_get_contents($coordsPath), true) : [];
+        $kabupatenCoords = app(\App\Services\FastApiWorkerService::class)->getKabupatenCoords() ?? [];
 
         $charts = [
             'status' => collect($statusCounts),
