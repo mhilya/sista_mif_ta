@@ -644,7 +644,7 @@
                 type: 'doughnut',
                 data: {
                     labels: Object.keys(chartData.profile),
-                    datasets: [{ data: Object.values(chartData.profile), backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#64748b'] }]
+                    datasets: [{ data: Object.values(chartData.profile), backgroundColor: ['#2563EB', '#DC2626', '#F59E0B', '#7C3AED', '#DB2777'] }]
                 },
                 options: pieOptions
             });
@@ -653,7 +653,7 @@
                 type: 'pie',
                 data: {
                     labels: Object.keys(chartData.method),
-                    datasets: [{ data: Object.values(chartData.method), backgroundColor: ['#10b981', '#3b82f6', '#f59e0b'] }]
+                    datasets: [{ data: Object.values(chartData.method), backgroundColor: ['#845EC2', '#D65DB1', '#FF9671', '#FFC75F'] }]
                 },
                 options: pieOptions
             });
@@ -662,7 +662,7 @@
                 type: 'bar',
                 data: {
                     labels: Object.keys(chartData.waktu_tunggu),
-                    datasets: [{ label: 'Rata-rata Bulan', data: Object.values(chartData.waktu_tunggu), backgroundColor: '#3b82f6', borderRadius: 4 }]
+                    datasets: [{ label: 'Rata-rata Bulan', data: Object.values(chartData.waktu_tunggu), backgroundColor: ['#00C9A7', '#845EC2', '#D65DB1', '#FF9671', '#FFC75F'], borderRadius: 4 }]
                 },
                 options: barOptions
             });
@@ -671,7 +671,7 @@
                 type: 'bar',
                 data: {
                     labels: Object.keys(chartData.funnel),
-                    datasets: [{ data: Object.values(chartData.funnel), backgroundColor: ['#8b5cf6', '#ec4899', '#10b981'], borderRadius: 4 }]
+                    datasets: [{ data: Object.values(chartData.funnel), backgroundColor: ['#008E9B', '#F39C12', '#E74C3C', '#2C3E50'], borderRadius: 4 }]
                 },
                 options: {
                     indexAxis: 'y',
@@ -683,7 +683,7 @@
                 type: 'bar',
                 data: {
                     labels: Object.keys(chartData.lokasi),
-                    datasets: [{ data: Object.values(chartData.lokasi), backgroundColor: '#14b8a6', borderRadius: 4 }]
+                    datasets: [{ data: Object.values(chartData.lokasi), backgroundColor: ['#2ECC71', '#3498DB', '#9B59B6', '#34495E', '#F1C40F'], borderRadius: 4 }]
                 },
                 options: barOptions
             });
@@ -715,7 +715,15 @@
                     else if(c.includes('malang')) c = 'malang';
 
                     if (cityCoords[c]) {
-                        L.marker(cityCoords[c]).addTo(map)
+                        const radius = Math.max(8, Math.min(count * 3 + 5, 40));
+                        L.circleMarker(cityCoords[c], {
+                            radius: radius,
+                            fillColor: '#3b82f6',
+                            color: '#1d4ed8',
+                            weight: 2,
+                            opacity: 1,
+                            fillOpacity: 0.7
+                        }).addTo(map)
                          .bindPopup(`<b>${city}</b><br>Jumlah: ${count} lulusan`);
                     }
                 }

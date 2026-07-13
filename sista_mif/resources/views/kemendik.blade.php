@@ -248,7 +248,7 @@
                 type: 'pie',
                 data: {
                     labels: Object.keys(chartData.status),
-                    datasets: [{ data: Object.values(chartData.status), backgroundColor: ['#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#64748b'] }]
+                    datasets: [{ data: Object.values(chartData.status), backgroundColor: ['#2563EB', '#DC2626', '#F59E0B', '#7C3AED', '#10B981', '#DB2777'] }]
                 },
                 options: pieOptions
             });
@@ -257,7 +257,7 @@
                 type: 'doughnut',
                 data: {
                     labels: Object.keys(chartData.kesesuaian),
-                    datasets: [{ data: Object.values(chartData.kesesuaian), backgroundColor: ['#14b8a6', '#f43f5e', '#facc15', '#6366f1', '#a855f7'] }]
+                    datasets: [{ data: Object.values(chartData.kesesuaian), backgroundColor: ['#14B8A6', '#F43F5E', '#8B5CF6', '#F59E0B', '#3B82F6'] }]
                 },
                 options: pieOptions
             });
@@ -266,7 +266,7 @@
                 type: 'bar',
                 data: {
                     labels: Object.keys(chartData.level),
-                    datasets: [{ data: Object.values(chartData.level), backgroundColor: '#3b82f6', borderRadius: 4 }]
+                    datasets: [{ data: Object.values(chartData.level), backgroundColor: ['#00C9A7', '#845EC2', '#D65DB1', '#FF9671', '#FFC75F'], borderRadius: 4 }]
                 },
                 options: barOptions
             });
@@ -275,7 +275,7 @@
                 type: 'bar',
                 data: {
                     labels: Object.keys(chartData.instansi),
-                    datasets: [{ data: Object.values(chartData.instansi), backgroundColor: ['#ec4899', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b'], borderRadius: 4 }]
+                    datasets: [{ data: Object.values(chartData.instansi), backgroundColor: ['#2ECC71', '#3498DB', '#9B59B6', '#34495E', '#F1C40F'], borderRadius: 4 }]
                 },
                 options: {
                     indexAxis: 'y',
@@ -287,7 +287,7 @@
                 type: 'bar',
                 data: {
                     labels: Object.keys(chartData.pendapatan),
-                    datasets: [{ data: Object.values(chartData.pendapatan), backgroundColor: '#10b981', borderRadius: 4 }]
+                    datasets: [{ data: Object.values(chartData.pendapatan), backgroundColor: ['#008E9B', '#F39C12', '#E74C3C', '#2C3E50', '#18BC9C'], borderRadius: 4 }]
                 },
                 options: barOptions
             });
@@ -305,7 +305,15 @@
                 for (const [kode, count] of Object.entries(chartData.map_lokasi)) {
                     if (coordsDict[kode] && coordsDict[kode].coords) {
                         const cityData = coordsDict[kode];
-                        L.marker(cityData.coords).addTo(map)
+                        const radius = Math.max(8, Math.min(count * 3 + 5, 40));
+                        L.circleMarker(cityData.coords, {
+                            radius: radius,
+                            fillColor: '#a855f7',
+                            color: '#7e22ce',
+                            weight: 2,
+                            opacity: 1,
+                            fillOpacity: 0.7
+                        }).addTo(map)
                          .bindPopup(`<b>${cityData.name}</b><br>Jumlah: ${count} alumni`);
                     }
                 }
