@@ -101,11 +101,7 @@ class InternalDataController extends Controller
             'map_lokasi' => $chartLokasi,
         ];
 
-        $metricsPath = base_path('../fastapi/ml_assets/metrics_internal_only.json');
-        $mlMetrics = null;
-        if (file_exists($metricsPath)) {
-            $mlMetrics = json_decode(file_get_contents($metricsPath), true);
-        }
+        $mlMetrics = app(\App\Services\FastApiWorkerService::class)->getInternalMetrics();
 
         $manualOverrideCount = ClassificationResult::where('source_type', 'internal_mif')
             ->where('status', 'manual_override')

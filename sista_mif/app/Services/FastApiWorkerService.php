@@ -172,4 +172,61 @@ class FastApiWorkerService
             return ['error' => "Kesalahan sistem internal: {$e->getMessage()}"];
         }
     }
+
+    /**
+     * Ambil data metrics internal ML dari FastAPI
+     */
+    public function getInternalMetrics(): ?array
+    {
+        try {
+            $response = $this->getClient(5)->get($this->baseUrl . '/api/v1/metrics/internal');
+
+            if ($response->successful()) {
+                return $response->json();
+            }
+
+            if ($response->status() !== 404) {
+                Log::warning("FastAPI Metrics Error: HTTP {$response->status()} | {$response->body()}");
+            }
+            return null;
+        } catch (ConnectionException $e) {
+            Log::warning("FastAPI Metrics Connection Error: {$e->getMessage()}");
+            return null;
+        } catch (\Exception $e) {
+            Log::error("FastAPI Metrics System Error: {$e->getMessage()}");
+            return null;
+        }
+    }
+
+    /**
+     * Ambil data CSV keterangan Kemendikbud dari FastAPI
+     */
+    public function getKemendikKeteranganCsv(): ?string
+    {
+        try {
+            $response = $this->getClient(5)->get($this->baseUrl . '/api/v1/data/keterangan');
+            if ($response->successful()) {
+                return $response->body();
+            }
+            return null;
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Ambil data JSON koordinat kabupaten dari FastAPI
+     */
+    public function getKabupatenCoords(): ?array
+    {
+        try {
+            $response = $this->getClient(5)->get($this->baseUrl . '/api/v1/data/kabupaten_coords');
+            if ($response->successful()) {
+                return $response->json();
+            }
+            return null;
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
 }
